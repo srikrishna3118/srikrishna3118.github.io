@@ -1,0 +1,247 @@
+<!DOCTYPE HTML>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Srikrishna Acharya</title>
+  
+  <meta name="author" content="Jon Barron/Acharya">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+
+<body>
+  <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr style="padding:0px">
+      <td style="padding:0px">
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr style="padding:0px">
+            <td style="padding:2.5%;width:63%;vertical-align:middle">
+              <p style="text-align:center">
+                <name>Srikrishna Acharya</name>
+              </p>
+              <p>I am a PhD Scholar at <a href="https://cps.iisc.ac.in">Robert Bosch Centre for Cyber Physical Systems
+              </a>, co advised by <a href="https://aml.ece.iisc.ac.in/index.php/Bharadwaj_Amrutur">
+                Prof Bharadwaj Amrutur</a> and <a href="http://cds.iisc.ac.in/faculty/simmhan/">Prof Yogesh Simmhan</a>.
+                Currently I am part of <a href="https://aml.ece.iisc.ac.in/index.php/Autonomous_Machines_Laboratory">
+                  Autonomous Machines Lab</a>, where we explore wide range of problems include, but
+                not limited to, collaborative robotics, Learning based Robots, and Network enabled Multi-Robot Systems.
+                My primary research focus is to build co-simulation framework that capture the complete cyber-physical
+                systems aspects of the multi-robot systems.
+
+              </p>
+              <p>
+                I did my master's in VLSI and Embedded Systems at <a href="https://www.iiitd.ac.in/"> IIIT-Delhi, Delhi</a>.
+                During my course I worked as Research Intern at Advance Systems and Technology (AST) Group, STMicroelectronics,
+                where I worked on various research problems in the area of 3D computer graphics and image processing.
+                The primary focus of the team is to work on open-source tools and research papers and integrating them
+                into their existing tools.
+                My course project is  to minimize usage of sensors(IMU) for rendering realistic 3D-Avatar
+                using physics simulation<sup><a href="https://repository.iiitd.edu.in/xmlui/handle/123456789/145">1</a></sup>,
+                where I was advised by <a href="https://acce12.iiitd.ac.in/sujit">Dr. P.B Sujit</a>.
+                
+              </p>
+              <p>
+                I have a batchelor's degree in Electronics and Communications Engineering from <a href="https://www.gprec.ac.in/"> GPREC, Kurnool</a>.
+
+              </p>
+              <p style="text-align:center">
+                <a href="mailto:srikrishna3118@gmail.com">Email</a> &nbsp/&nbsp
+                <a href="files/Resume.pdf">CV</a> &nbsp/&nbsp
+                <a href="https://www.linkedin.com/in/srikrishna-acharya-91a42b5a/">LinkedIn</a> &nbsp/&nbsp
+                <a href="https://scholar.google.com/citations?user=LOh1hLwAAAAJ&hl=en">Google Scholar</a> &nbsp/&nbsp
+                <a href="https://twitter.com/thisisbsk">Twitter</a> &nbsp/&nbsp
+                <a href="https://github.com/srikrishna3118/">Github</a>
+              </p>
+            </td>
+            <td style="padding:2.5%;width:40%;max-width:40%">
+              <a href="images/srikrishna1.jpg"><img style="width:100%;max-width:100%" alt="profile photo" src="images/srikrishna1.jpg" class="hoverZoomLink"></a>
+            </td>
+          </tr>
+        </tbody></table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+              <tr>
+              <td style="padding:20px;width:100%;vertical-align:middle">
+                <heading>Publications</heading>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+        <!--<tr>
+          <td style="padding:20px;width:25%;vertical-align:middle">
+            <img src="images/MRTA_TASK.png" alt="fast-texture" width="260" height="165">
+          </td>
+          <td width="75%" valign="middle">
+            <a href="/files/FINAL_ICRA2022.pdf">
+              <papertitle>Rapid prototyping of Industry 4.0 use cases for warehouse automation
+                using a Network-Robot Co-Simulation Framework (submitted for review in ICRA2022)</papertitle>
+            </a>
+            <br>
+            <strong>Srikrishna Acharya</strong>, Parv Maheshwari, Mukunda Bharatheesa, Amrutur Bharadwaj, Yogesh Simmhan
+            <p> With an efficient network of taskable robot agents,
+              Multi-Robot Systems (MRS) have brought value addition in
+              diverse domains like logistics, cargo management, and agricul-
+              ture. In this work, we propose the use of a modular network-
+              robot co-simulation framework CORNET 2.0, which is agnostic
+              to the application middleware and hence can support diverse
+              automation solutions in simulation. We showcase the benefits
+              of such a co-simulation framework to evaluate a network-
+              aware proactive collision avoidance approach in a multi-robot
+              navigation scenario in which a robot’s footprint is relayed over
+              a network to all the other robots in the ego robot’s network
+              visibility. This allows all robots to proactively avoid each other,
+              resulting in a higher average task execution efficiency and
+              minimizing collisions under favourable network conditions.</p>
+            <p>Co-Simulation, Gazebo, ROS, ROS2</p>
+          </td>
+        </tr>-->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+            <img src="images/CORNET2.png" alt="fast-texture" width="260" height="165">
+          </td>
+          <td width="75%" valign="middle">
+            <a href="https://api.semanticscholar.org/CorpusID:237513380">
+              <papertitle>CORNET2.0: A Co-Simulation Middleware for Robot Networks</papertitle>
+            </a>
+            <br>
+            <strong>Srikrishna Acharya</strong>, Amrutur Bharadwaj, Mukunda Bharatheesa, Yogesh Simmhan
+
+            <p> We present a networked co-simulation framework for multi-robot systems applications. We require a simulation framework that captures both physical interactions and communications aspects to effectively design such complex systems. This is necessary to co-design the multi-robots' autonomy logic and the communication protocols. The proposed framework extends existing tools to simulate the robot’s autonomy and network-related aspects. We have used Gazebo with ROS/ROS2 to develop the autonomy logic for robots and mininet-WiFi as the network simulator to capture the cyber-physical systems properties of the multi-robot system. This framework addresses the need to seamlessly integrate the two simulation environments by synchronizing mobility and time, allowing for easy migration of the algorithms to real platforms.             </p>
+            <p>Co-Simulation, Gazebo, ROS, ROS2</p>
+          </td>
+        </tr>
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/CORNET.png" alt="fast-texture" width="260" height="165">
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://ieeexplore.ieee.org/document/9027459">
+                <papertitle>CORNET: A Co-Simulation Middleware for Robot Networks</papertitle>
+              </a>
+              <br>
+              <strong>Srikrishna Acharya</strong>, Amrutur Bharadwaj, Yogesh Simmhan, Aditya Gopalan, Parimal Parag , Himanshu Tyagi
+              
+              <p> This paper describes CORNET, a co-simulation middleware for applications involving multi-robot systems like a network of Unmanned Aerial Vehicle (UAV) systems. Design of such systems requires knowledge of the flight dynamics of UAVs and the communication links connecting UAVs with each other or with the ground control station. Besides, UAV networks are dynamic and distinctive from other ad-hoc networks and require protocols that can adapt to high-mobility, dynamic topology and changing link quality in power constrained resource platforms. Therefore, it is necessary to co-design the UAV path planning algorithms and the communication protocols. The proposed co-simulation framework integrates existing tools to simulate flight dynamics and network related aspects. Gazebo with robot operating system (ROS) is used as a physical system UAV simulator and NS-3 is used as a network simulator, to jointly capture the cyber-physical system (CPS) aspects of the multi-UAV systems. A particular aspect we address is on synchronizing time and position across the two simulation environments, and we provide APIs to allow easy migration of the algorithms to real platforms.
+              </p>
+              <p>Co-Simulation, Gazebo, ROS, PX4 autopilot</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/NETAD.png" alt="fast-texture" width="260" height="165">
+            </td>
+            <td width="75%" valign="middle">
+              <a href="https://ieeexplore.ieee.org/document/9352914">
+                <papertitle>Network Emulation For Tele-driving Application Development</papertitle>
+              </a>
+              <br>
+              <strong>Srikrishna Acharya</strong>, S Sadgun S Devanahalli , Alok Rawat, Varghese P Kuruvilla, Pratik Sharma, Bharadwaj Amrutur, Ashish Joglekar, Raghu Krishnapuram, Yogesh Simmhan, Himanshu Tyagi
+              <a href="https://ieeexplore.ieee.org/document/9352914">Paper</a> |
+              <a href="https://www.youtube.com/watch?v=NBMEQNX4m0I">Video</a>
+              <p>
+                We present a co-emulation framework for Connected Autonomous Vehicle for development and validation of technologies for teleoperation of semi-autonomous vehicles. Despite several technical advancements in the autonomous vehicles' domain, Automated Driving System (ADS) deployments were limited to SAE [1] level-3. Remote driving capability offers a promising fallback option. In order to establish a technology stack over existing and new network infrastructure, we need a simulation or emulation framework, to test the system before deploying it on the road. Our framework enables testing with an actual vehicle and a simulated network, and we demonstrate a tele-driving use-case of a retrofitted electric car.
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+
+        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+            <td>
+              <heading>Projects</heading>
+            </td>
+          </tr>
+        </tbody></table>
+
+        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/SCTestBed.png" alt="fast-texture" width="300" height="165">
+            </td>
+            <td width="75%" valign="middle">
+              <papertitle>An Open Smart City IoT Test Bed: Street Light Poles as Smart City Spines</papertitle>
+              <br>
+              <a href="https://dl.acm.org/doi/abs/10.1145/3054977.3057303">Paper</a>
+              <p>
+                Street light poles will be a key enabler for a smart city's hardware infrastructure,
+                thanks to their ubiquity throughout the city as well as access to power.
+                We propose an IoT test bed around light poles for the city, with a modular hardware and software
+                architecture to enable experimentation with various technologies.
+              </p>
+            </td>
+          </tr>
+          <!--<tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/" alt="fast-texture" width="300" height="150">
+            </td>
+            <td width="75%" valign="middle">
+              <papertitle>A low-cost non-intrusive appliance load monitoring system</papertitle>
+              <br>
+              <p>
+                The major problem in current day's scenario is the increasing power consumption and vastly decreasing energy resources, especially in developing countries like India. This calls for a dire need to properly monitor power usage and take necessary steps to optimize the usage. To achieve this goal, a proper system needs to be developed that can provide the energy requirements and usage at all levels and build automating systems that reduce the unnecessary usage and losses. Towards this goal, we try to design a architecture which generate models for power usage in real time and that requires the minimal amount to changes to existing structures.
+              </p>
+            </td>
+          </tr> -->
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/DatamodelRef.png" alt="DataModel" width="300" height="165">
+            </td>
+            <td width="75%" valign="middle">
+              <papertitle>Schemas for IoT interoperability for smart cities</papertitle> <br>
+              <a href="https://github.com/rbccps-iisc/smart_cities_schemas">GitHub</a>
+              <p>
+                One of the key aspects of smart city ecosystem is enabling easy collection and exchange of data
+                to develop new applications. Providing good, open API's for smart city middleware along with
+                standardising the data schemas will be vital for application and device ecosystem to evolve.
+                In this paper we present the resource catalog component of the middleware along with a framework
+                to develop data schemas for IoT devices. Using data schemas one can provide meta-data which enables
+                effective use of the device data.
+              </p>
+            </td>
+          </tr>
+        </tbody></table>
+        
+        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
+          <tr>
+            <td>
+              <heading>Experience</heading>
+            </td>
+          </tr>
+        </tbody></table>
+
+        <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+          <tr>
+            <td style="padding:20px;width:25%;vertical-align:middle">
+              <img src="images/rbccps.png" alt="rbccps" width="350" height="90">
+            </td>
+            <td width="75%" valign="middle">
+              Robert Bosch Centre for Cyber-Physical Systems (RBCCPS) <br> Indian Institute of Science, Bangalore, India<br>
+              Project Associate
+              I was Technical Associate in Robert Bosch Centre for Cyber Physical Systems.
+              We as a group work on various inter-disciplinary projects related to smart neighbourhood.
+              I am part of IOT for Smart City Task Force (iot4sctf), a technology driven open forum of domain experts
+              from industry, academia, government, startups, professional bodies and user agencies. <br>
+              <a href="https://github.com/rbccps-iisc/ideam">GitHub (project)</a> 
+            </td>
+          </tr>
+        </tbody></table>
+
+
+
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+          <tr>
+            <td style="padding:0px">
+              <br>
+              <p style="text-align:right;font-size:small;">
+                Thanks to Jon Barron for his  <a href="http://jonbarron.info">website template</a>.
+                Please do take a look at that page, it's really cool with lots of NeRF videos!
+            </td>
+          </tr>
+        </tbody></table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
