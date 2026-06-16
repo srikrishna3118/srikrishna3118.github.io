@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="PhD Scholar, IISc">
+    <meta name="description" content="Senior Research Specialist at Nokia. Research in co-simulation, collaborative robotics, and multi-robot systems.">
     <meta name="author" content="Srikrishna Acharya">
     <meta name="theme-color" content="#222222">
 
@@ -36,6 +36,7 @@
           <a class="topnav-link" href="#about">About</a>
           <a class="topnav-link" href="#experience">Experience</a>
           <a class="topnav-link" href="#certifications">Certifications</a>
+          <a class="topnav-link" href="#projects">Projects</a>
           <a class="topnav-link" href="#publications">Publications</a>
           <a class="topnav-link" href="#talks">Talks</a>
         </nav>
@@ -143,6 +144,37 @@
 
             </aside>
             <main class="col-md-8 pt-4 about">
+                <section id="hero" class="hero" data-reveal aria-label="Introduction">
+                  <p class="hero-kicker">Senior Research Specialist &middot; Nokia</p>
+                  <h1 class="hero-title">Srikrishna Acharya</h1>
+                  <p class="hero-tagline">Researching co-simulation frameworks for cyber-physical multi-robot systems — from networked robot middleware to Industry 4.0 warehouse automation.</p>
+                  <div class="impact-stats" aria-label="Research impact">
+                    <div class="stat-card">
+                      <span class="stat-value" data-count="7" data-stat="publications">0</span>
+                      <span class="stat-label">Publications</span>
+                    </div>
+                    <div class="stat-card">
+                      <span class="stat-value" data-count="2" data-stat="talks">0</span>
+                      <span class="stat-label">Talks</span>
+                    </div>
+                    <div class="stat-card">
+                      <span class="stat-value" data-count="10" data-stat="years">0</span>
+                      <span class="stat-label">Years in Research</span>
+                    </div>
+                    <div class="stat-card">
+                      <span class="stat-value" data-count="0" data-stat="github-stars">0</span>
+                      <span class="stat-label">GitHub Stars</span>
+                    </div>
+                  </div>
+                  <div class="research-chips" role="group" aria-label="Filter by research area">
+                    <button class="chip is-active" type="button" data-research-filter="all">All areas</button>
+                    <button class="chip" type="button" data-research-filter="robotics">Collaborative Robotics</button>
+                    <button class="chip" type="button" data-research-filter="co-simulation">Co-Simulation</button>
+                    <button class="chip" type="button" data-research-filter="multi-robot">Multi-Robot Networks</button>
+                    <button class="chip" type="button" data-research-filter="iot">IoT &amp; Smart Cities</button>
+                  </div>
+                </section>
+
                 <section id="about" class="lead-block" data-reveal>
         I am a Senior Research Specialist at Nokia (ST NSD Radio Interface &amp; Access Group  RIAG), based in Bengaluru, India. Previously, I was a PhD Scholar at IISc. <br><br>
         During my time as PhD Scholar at <a href="https://cps.iisc.ac.in">Robert Bosch Centre for Cyber Physical Systems
@@ -164,11 +196,11 @@
 				  using physics simulation<sup><a href="https://repository.iiitd.edu.in/xmlui/handle/123456789/145">1</a></sup>,
 				  where I was advised by <a href="https://acce12.iiitd.ac.in/sujit">Dr. P.B Sujit</a>.<br><br>
 
-				  I have a batchelor's degree in Electronics and Communications Engineering from <a href="https://www.gprec.ac.in/"> GPREC, Kurnool</a>.<br>
+				  I have a bachelor's degree in Electronics and Communications Engineering from <a href="https://www.gprec.ac.in/"> GPREC, Kurnool</a>.<br>
 
 
-          If you wish to sponsor my work or want to know more about my work, you can contribute to my github sponsor account
-            and to how more about the work I am doing please refer to the links to the left.
+          If you wish to sponsor my work or want to know more about what I am doing, you can contribute to my GitHub sponsor account
+            and explore the links in the sidebar.
         <div class="mt-2" data-reveal>
           <iframe src="https://github.com/sponsors/srikrishna3118/button" title="Sponsor srikrishna3118" height="35" width="116" style="border: 0;"></iframe>
         </div>
@@ -258,9 +290,32 @@
           </p>
         </div>
 
+        <h2 class="section-title" id="projects" data-reveal>Projects</h2>
+        <section class="projects-section" data-reveal aria-label="GitHub projects">
+          <div class="github-stats" id="githubStats" aria-live="polite">
+            <div class="github-stat"><span class="github-stat-value" data-stat-repos>&mdash;</span><span class="github-stat-label">Public repos</span></div>
+            <div class="github-stat"><span class="github-stat-value" data-stat-stars>&mdash;</span><span class="github-stat-label">Total stars</span></div>
+            <div class="github-stat"><span class="github-stat-value" data-stat-followers>&mdash;</span><span class="github-stat-label">Followers</span></div>
+          </div>
+          <div class="projects-toolbar">
+            <label class="sr-only" for="projectSearch">Search projects</label>
+            <input class="projects-search" type="search" id="projectSearch" placeholder="Search projects..." autocomplete="off">
+            <div class="sort-toggle" role="group" aria-label="Sort projects">
+              <button class="sort-btn is-active" type="button" data-sort="stars">Stars</button>
+              <button class="sort-btn" type="button" data-sort="updated">Recent</button>
+            </div>
+          </div>
+          <div class="language-filters" id="languageFilters" role="group" aria-label="Filter by language"></div>
+          <p class="projects-status" id="projectsStatus" aria-live="polite"></p>
+          <h3 class="projects-subtitle">Featured</h3>
+          <div class="projects-grid featured-grid" id="featuredProjects"></div>
+          <h3 class="projects-subtitle">More on GitHub</h3>
+          <div class="projects-grid" id="moreProjects"></div>
+        </section>
+
          <h2 class="section-title" id="publications" data-reveal>Publications</h2>
          <div class="py-2">
-         <p class="paper my-2 pl-2" data-reveal>
+         <p class="paper my-2 pl-2" data-reveal data-research="co-simulation robotics iot">
            <span class="papertitle">Rapid prototyping of Industry 4.0 use cases for warehouse automation
 						using a Network-Robot Co-Simulation Framework</span><br>
 						<span class="thisauthor"><strong>Srikrishna Acharya</strong></span>, Parv Maheshwari, Mukunda Bharatheesa, Amrutur Bharadwaj, Yogesh Simmhan<br>
@@ -268,82 +323,54 @@
          </p>
          </div>
          <div class="py-2">
-         <p class="paper my-2 pl-2" data-reveal>
+         <p class="paper my-2 pl-2" data-reveal data-research="co-simulation robotics">
            <span class="papertitle">CORNET2.0: A Co-Simulation Middleware for Robot Networks</span><br>
 					 <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Amrutur Bharadwaj, Mukunda Bharatheesa, Yogesh Simmhan<br>
            <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9668311/proceeding">COMSNETS 2022</a> | 2022 14th International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
-           <a class="tag" href="https://ieeexplore.ieee.org/document/9668501"
-             target="_blank">paper</a> |
-           <a class="tag" href="#" target="_blank">presentation</a>  |
-					 <a class="tag" href="#" target="_blank">cite</a> |
-					 <a class="tag" href="#" target="_blank">github</a> |
+           <a class="tag" href="https://ieeexplore.ieee.org/document/9668501" target="_blank" rel="noopener">paper</a>
+           <span class="tagsep">|</span>
+           <a class="tag" href="https://github.com/srikrishna3118/py_cornet" target="_blank" rel="noopener">github</a>
          </p>   </div>
 
          <div class="py-2">
-           <p class="paper my-2 pl-2" data-reveal>
+           <p class="paper my-2 pl-2" data-reveal data-research="co-simulation multi-robot robotics">
              <span class="papertitle">A Co-Simulation Framework for Communication and Control in Autonomous Multi-Robot Systems</span><br>
              <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Mukunda Bharatheesha, Yogesh Simmhan, Bharadwaj Amrutur<br>
              <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/10341341/proceeding">IROS</a> | 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</span><br>
-             <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/10342407" target="_blank">paper</a> |
-             <a class="tag" href="#" target="_blank">presentation</a>  |
-             <a class="tag" href="#" target="_blank">cite</a> |
-             <a class="tag" href="#" target="_blank">github</a> |
+             <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/10342407" target="_blank" rel="noopener">paper</a>
            </p>
          </div>
          <div class="py-2">
-            <p class="paper my-2 pl-2" data-reveal>
+            <p class="paper my-2 pl-2" data-reveal data-research="multi-robot co-simulation">
               <span class="papertitle">Network Emulation For Tele-driving Application Development</span><br>
               <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, S Sadgun S Devanahalli , Alok Rawat, Varghese P Kuruvilla, Pratik Sharma, Bharadwaj Amrutur, Ashish Joglekar, Raghu Krishnapuram, Yogesh Simmhan, Himanshu Tyagi<br>
               <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">COMSNETS 2021</a> | 2021 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
-              <a class="tag" href="https://ieeexplore.ieee.org/document/9352914"
-                target="_blank">demo paper</a> |
-              <a class="tag" href="https://www.youtube.com/watch?v=NBMEQNX4m0I" target="_blank">presentation</a>  |
-              <a class="tag" href="#" target="_blank">cite</a> |
-              <a class="tag" href="#" target="_blank">github</a> |
+              <a class="tag" href="https://ieeexplore.ieee.org/document/9352914" target="_blank" rel="noopener">demo paper</a>
+              <span class="tagsep">|</span>
+              <a class="tag" href="https://www.youtube.com/watch?v=NBMEQNX4m0I" target="_blank" rel="noopener">presentation</a>
             </p>   </div>
             <div class="py-2">
-              <p class="paper my-2 pl-2" data-reveal>
+              <p class="paper my-2 pl-2" data-reveal data-research="multi-robot robotics">
                 <span class="papertitle">Network Based Multi-Bot Awareness</span><br>
                 G Dhanaprakaash, Bishal Jaiswal, <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Anush Kumar, Aruul Mozhi Varman, Kavish Shah, Mohitvishnu Srinivas Gadde, Sourav Mishra, Aditya Gopalan, Bharadwaj Amrutur, Himanshu Tyagi, Preetam Patil, Raghu Krishnapuram, Soumya Subhra Banerjee, Suresh Sundaram<br>
                 <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">COMSNETS 2021</a> | 2021 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
-                <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9352810"
-                  target="_blank">poster</a> |
-                <a class="tag" href="#" target="_blank">presentation</a>  |
-                <a class="tag" href="#" target="_blank">cite</a> |
-                <a class="tag" href="#" target="_blank">github</a> |
+                <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9352810" target="_blank" rel="noopener">poster</a>
               </p>   </div>
 				 <div class="py-2">
-					<p class="paper my-2 pl-2" data-reveal>
+					<p class="paper my-2 pl-2" data-reveal data-research="co-simulation robotics">
 						<span class="papertitle">CORNET: A Co-Simulation Middleware for Robot Networks</span><br>
 						<span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Amrutur Bharadwaj, Yogesh Simmhan, Aditya Gopalan, Parimal Parag , Himanshu Tyagi<br>
 						<span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9011703/proceeding">COMSNETS 2020</a> | 2020 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
-						<a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9027459"
-							target="_blank">paper</a> |
-						<a class="tag" href="#" target="_blank">presentation</a>  |
-						<a class="tag" href="#" target="_blank">cite</a> |
-						<a class="tag" href="#" target="_blank">github</a> |
+						<a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9027459" target="_blank" rel="noopener">paper</a>
+            <span class="tagsep">|</span>
+            <a class="tag" href="https://github.com/srikrishna3118/CORNET" target="_blank" rel="noopener">github</a>
 					</p>   </div>
               <div class="py-2">
-                <p class="paper my-2 pl-2" data-reveal>
+                <p class="paper my-2 pl-2" data-reveal data-research="robotics">
                   <span class="papertitle">PUF based secure framework for hardware and software security of drones</span><br>
                   Vishal Pal, <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Somesh Shrivastav, Sourav Saha, Ashish Joglekar, Bharadwaj Amrutur<br>
                   <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">AsianHOST</a> | 2020 Asian Hardware Oriented Security and Trust Symposium (AsianHOST)</span><br>
-                  <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9358264"
-                    target="_blank">short paper</a> |
-                  <a class="tag" href="#" target="_blank">presentation</a>  |
-                  <a class="tag" href="#" target="_blank">cite</a> |
-                  <a class="tag" href="#" target="_blank">github</a> |
-                </p>   </div>
-                <div class="py-2">
-                <p class="paper my-2 pl-2" data-reveal>
-                  <span class="papertitle">PUF based secure framework for hardware and software security of drones</span><br>
-                  Vishal Pal, <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Somesh Shrivastav, Sourav Saha, Ashish Joglekar, Bharadwaj Amrutur<br>
-                  <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">AsianHOST</a> | 2020 Asian Hardware Oriented Security and Trust Symposium (AsianHOST)</span><br>
-                  <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9358264"
-                    target="_blank">short paper</a> |
-                  <a class="tag" href="#" target="_blank">presentation</a>  |
-                  <a class="tag" href="#" target="_blank">cite</a> |
-                  <a class="tag" href="#" target="_blank">github</a> |
+                  <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9358264" target="_blank" rel="noopener">short paper</a>
                 </p>   </div>
 
                            <h2 class="section-title" id="talks" data-reveal>Talks</h2>
@@ -353,9 +380,7 @@
                      This talk is part of 'Student Research Seminar Series, 2021', an IEEE-IISc ComSoc & IEEE-IISc SPS collaborative event.<br>
                      <img class="img-fluid instilogo p-2" src="images/comsoc.jpg"><span class="conf">IEEE-IISc ComSoc Chapter</span> <br>
 
-                     <a class="tag" href="https://www.youtube.com/watch?v=EPdzZ9SfjuU" target="_blank">video</a><span class="tagsep">|</span>
-                     <a class="tag" href="#"
-                         target="_blank">abstract</a>
+                     <a class="tag" href="https://www.youtube.com/watch?v=EPdzZ9SfjuU" target="_blank" rel="noopener">video</a>
                  </p>
                  </div>
 
@@ -376,11 +401,34 @@
       <i class="fa fa-arrow-up" aria-hidden="true"></i>
     </button>
 
+    <div class="project-modal" id="projectModal" hidden aria-hidden="true">
+      <div class="project-modal-backdrop" data-modal-close></div>
+      <div class="project-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+        <header class="project-modal-header">
+          <div>
+            <h2 class="project-modal-title" id="projectModalTitle"></h2>
+            <p class="project-modal-desc" id="projectModalDesc"></p>
+          </div>
+          <button class="icon-btn project-modal-close" type="button" aria-label="Close project details" data-modal-close>
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </header>
+        <div class="project-modal-meta" id="projectModalMeta"></div>
+        <div class="project-modal-lang" id="projectModalLang"></div>
+        <div class="project-modal-actions" id="projectModalActions"></div>
+        <div class="project-modal-readme" id="projectModalReadme">
+          <p class="projects-loading">Loading README...</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
     <script src="assets/site.js"></script>
 </body>
 </html>
