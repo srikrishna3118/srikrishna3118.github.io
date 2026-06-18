@@ -226,13 +226,19 @@
   };
 
   const GITHUB_USER = 'srikrishna3118';
+  const GITHUB_SOURCES = [
+    { login: 'srikrishna3118', type: 'user', label: 'Personal' },
+    { login: 'rbccps-iisc', type: 'org', label: 'RBCCPS' },
+    { login: 'dream-lab', type: 'org', label: 'DREAM:Lab' },
+    { login: 'artparkindia', type: 'org', label: 'ARTPARK' },
+  ];
   const FEATURED_REPOS = [
-    'CORNET',
-    'py_cornet',
-    'modern-systems-engineering',
-    'inverted_pendulum_control',
-    'nvidia_auvidea_j120support',
-    'droneacharya.net',
+    'srikrishna3118/CORNET',
+    'rbccps-iisc/CORNET2.0',
+    'srikrishna3118/py_cornet',
+    'srikrishna3118/modern-systems-engineering',
+    'srikrishna3118/inverted_pendulum_control',
+    'artparkindia/teleoperations',
   ];
   const CACHE_TTL_MS = 60 * 60 * 1000;
   const CACHE_PREFIX = 'gh-cache:';
@@ -323,6 +329,15 @@
   };
 
   const getLangColor = (lang) => LANG_COLORS[lang] || '#8b949e';
+
+  const repoKey = (repo) => repo.full_name || `${repo.owner?.login}/${repo.name}`;
+
+  const isPortfolioRepo = (repo, sourceLogin) => {
+    if (repo.fork) return false;
+    if (repo.name.endsWith('.github.io')) return false;
+    if (repo.name === `${sourceLogin}.github.io`) return false;
+    return true;
+  };
 
   const animateCount = (el, target) => {
     if (!el) return;
@@ -510,8 +525,6 @@
       const reposEl = document.querySelector('[data-stat-repos]');
       const starsEl = document.querySelector('[data-stat-stars]');
       const followersEl = document.querySelector('[data-stat-followers]');
-      const reposCount = user?.public_repos ?? repos.length;
-      const followersCount = user?.followers ?? 0;
 
       const setGithubStat = (el, value) => {
         if (!el) return;
@@ -522,9 +535,9 @@
         }
       };
 
-      setGithubStat(reposEl, reposCount);
+      setGithubStat(reposEl, repos.length);
       setGithubStat(starsEl, totalStars);
-      setGithubStat(followersEl, followersCount);
+      setGithubStat(followersEl, user?.followers ?? 0);
 
       updateHeroStars(totalStars);
     };
@@ -590,8 +603,9 @@
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'project-card';
-      card.setAttribute('data-repo', repo.name);
+      card.setAttribute('data-repo-full', repoKey(repo));
 
+      const owner = repo.owner?.login || '';
       const lang = repo.language || 'Unknown';
       const topics = (repo.topics || []).slice(0, 4);
       const topicHtml = topics.length
@@ -603,7 +617,10 @@
 
       card.innerHTML = `
         <div class="project-card-header">
-          <h4 class="project-card-name">${escapeHtml(repo.name)}</h4>
+          <div>
+            <p class="project-card-owner">${escapeHtml(owner)}</p>
+            <h4 class="project-card-name">${escapeHtml(repo.name)}</h4>
+          </div>
           <span class="project-card-meta"><i class="fa fa-star" aria-hidden="true"></i> ${repo.stargazers_count || 0}</span>
         </div>
         <p class="project-card-desc">${escapeHtml(repo.description || 'No description provided.')}</p>
@@ -624,7 +641,7 @@
         demoLink.addEventListener('click', (event) => event.stopPropagation());
       }
 
-      card.addEventListener('click', () => openProjectModal(repo.name));
+      card.addEventListener('click', () => openProjectModal(repoKey(repo)));
       return card;
     };
 
@@ -644,9 +661,9 @@
       const featuredSet = new Set(FEATURED_REPOS);
       const sorted = sortRepos(filteredRepos);
       const featured = FEATURED_REPOS
-        .map((name) => sorted.find((repo) => repo.name === name))
+        .map((key) => sorted.find((repo) => repoKey(repo) === key))
         .filter(Boolean);
-      const more = sorted.filter((repo) => !featuredSet.has(repo.name));
+      const more = sorted.filter((repo) => !featuredSet.has(repoKey(repo)));
 
       renderGrid(featuredEl, featured, 'No featured projects match your filters.');
       renderGrid(moreEl, more, 'No additional projects match your filters.');
@@ -656,7 +673,10 @@
       const query = (searchEl?.value || '').trim().toLowerCase();
       filteredRepos = allRepos.filter((repo) => {
         const haystack = [
+          repoKey(repo),
           repo.name,
+          repo.owner?.login || '',
+          repo._sourceLabel || '',
           repo.description || '',
           ...(repo.topics || []),
           repo.language || '',
@@ -674,7 +694,7 @@
         rateLimited
           ? 'Showing cached GitHub data (API rate limit reached). Data may be slightly stale.'
           : filteredRepos.length
-            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} shown`
+            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} from personal, RBCCPS, DREAM:Lab, and ARTPARK`
             : 'No projects match your search.'
       );
     };
@@ -686,10 +706,12 @@
       document.body.style.overflow = '';
     };
 
-    const openProjectModal = async (repoName) => {
+    const openProjectModal = async (repoFullName) => {
       if (!modal) return;
-      const repo = allRepos.find((r) => r.name === repoName);
+      const repo = allRepos.find((r) => repoKey(r) === repoFullName);
       if (!repo) return;
+
+      const fullName = repoKey(repo);
 
       const titleEl = document.getElementById('projectModalTitle');
       const descEl = document.getElementById('projectModalDesc');
@@ -698,7 +720,7 @@
       const actionsEl = document.getElementById('projectModalActions');
       const readmeEl = document.getElementById('projectModalReadme');
 
-      if (titleEl) titleEl.textContent = repo.full_name || repo.name;
+      if (titleEl) titleEl.textContent = fullName;
       if (descEl) descEl.textContent = repo.description || 'No description provided.';
       if (metaEl) {
         metaEl.innerHTML = `
@@ -723,15 +745,15 @@
       document.body.style.overflow = 'hidden';
 
       try {
-        const detailKey = `${GITHUB_USER}:${repo.name}:detail`;
-        const langsKey = `${GITHUB_USER}:${repo.name}:langs`;
-        const readmeKey = `${GITHUB_USER}:${repo.name}:readme`;
+        const detailKey = `${fullName}:detail`;
+        const langsKey = `${fullName}:langs`;
+        const readmeKey = `${fullName}:readme`;
 
         const [detailResult, langsResult, readmeResult] = await Promise.all([
-          githubFetch(`https://api.github.com/repos/${GITHUB_USER}/${repo.name}`, detailKey),
-          githubFetch(`https://api.github.com/repos/${GITHUB_USER}/${repo.name}/languages`, langsKey),
+          githubFetch(`https://api.github.com/repos/${fullName}`, detailKey),
+          githubFetch(`https://api.github.com/repos/${fullName}/languages`, langsKey),
           githubFetch(
-            `https://api.github.com/repos/${GITHUB_USER}/${repo.name}/readme`,
+            `https://api.github.com/repos/${fullName}/readme`,
             readmeKey,
             'application/vnd.github.raw'
           ),
@@ -790,17 +812,30 @@
       moreEl.innerHTML = '';
 
       try {
-        const [reposResult, userResult] = await Promise.all([
-          githubFetch(
-            `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
-            `${GITHUB_USER}:repos`
-          ),
+        const repoRequests = GITHUB_SOURCES.map((source) => {
+          const url = source.type === 'org'
+            ? `https://api.github.com/orgs/${source.login}/repos?per_page=100&sort=updated&type=public`
+            : `https://api.github.com/users/${source.login}/repos?per_page=100&sort=updated`;
+          return githubFetch(url, `${source.login}:repos`).then((result) => ({ ...result, source }));
+        });
+
+        const [repoResults, userResult] = await Promise.all([
+          Promise.all(repoRequests),
           githubFetch(`https://api.github.com/users/${GITHUB_USER}`, `${GITHUB_USER}:user`),
         ]);
 
-        rateLimited = Boolean(reposResult.rateLimited || userResult.rateLimited);
-        const repos = Array.isArray(reposResult.data) ? reposResult.data : [];
-        allRepos = repos.filter((repo) => !repo.fork && repo.name !== `${GITHUB_USER}.github.io`);
+        rateLimited = repoResults.some((result) => result.rateLimited) || Boolean(userResult.rateLimited);
+
+        const merged = new Map();
+        repoResults.forEach(({ data, source }) => {
+          const repos = Array.isArray(data) ? data : [];
+          repos.forEach((repo) => {
+            if (!isPortfolioRepo(repo, source.login)) return;
+            merged.set(repoKey(repo), { ...repo, _sourceLabel: source.label });
+          });
+        });
+
+        allRepos = Array.from(merged.values());
         filteredRepos = allRepos;
 
         updateGithubStats(allRepos, userResult.data);
