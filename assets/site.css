@@ -855,6 +855,62 @@ html.js .reveal.is-visible {
   color: var(--muted);
 }
 
+.achievement-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .achievement-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.achievement-item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  padding: 16px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.achievement-item a:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.achievement-badge {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.achievement-name {
+  font-weight: 650;
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.achievement-desc {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
 .projects-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -1337,7 +1393,8 @@ html[data-theme="dark"] .projects-error {
 @media (prefers-reduced-motion: reduce) {
   .stat-card:hover,
   .project-showcase-card:hover,
-  .cert-card:hover {
+  .cert-card:hover,
+  .achievement-item a:hover {
     transform: none;
   }
 
