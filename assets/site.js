@@ -239,6 +239,7 @@
     'rbccps-iisc/5g_opt_drl',
     'srikrishna3118/nvidia_auvidea_j120support',
     'rbccps-iisc/AutonomousDrones',
+    'srikrishna3118/ChoiRbot',
     'rbccps-iisc/DronePort_Controller',
     'rbccps-iisc/video-metadata',
   ];
@@ -255,10 +256,23 @@
       'Device-tree and kernel support for the NVIDIA Auvidea J120 carrier board on Jetson — hardware bring-up for embedded robotics and edge deployments.',
     'rbccps-iisc/AutonomousDrones':
       'Code and parameters for autonomous drone research at RBCCPS — spanning networked UAV middleware, teleoperations, and multi-robot awareness.',
+    'srikrishna3118/ChoiRbot':
+      'Collaborative robotics stack for coordinated multi-robot demos — ROS-based control, CMake build, and Dockerized deployment for research prototypes.',
     'rbccps-iisc/DronePort_Controller':
       'Automated drone landing-pad controller that manages touch-down, alignment, and charging to extend continuous flight operations.',
     'rbccps-iisc/video-metadata':
       'Video stream metadata tooling for tele-driving and network-aware robotics experiments with realistic media pipelines.',
+  };
+  const SHOWCASE_TAGS = {
+    'rbccps-iisc/CORNET2.0': ['Python', 'ROS', 'NS-3', 'Co-Simulation'],
+    'rbccps-iisc/CORNET': ['Python', 'ROS', 'Gazebo', 'NS-3'],
+    'srikrishna3118/modern-systems-engineering': ['Python', 'Systems', 'Curriculum', 'DevOps'],
+    'rbccps-iisc/5g_opt_drl': ['Python', '5G', 'Deep RL', 'RAN'],
+    'srikrishna3118/nvidia_auvidea_j120support': ['Linux', 'Jetson', 'Device Tree', 'Embedded'],
+    'rbccps-iisc/AutonomousDrones': ['Python', 'ROS', 'UAV', 'CPS'],
+    'srikrishna3118/ChoiRbot': ['Python', 'ROS', 'Docker', 'Robotics'],
+    'rbccps-iisc/DronePort_Controller': ['Embedded', 'Drones', 'IoT', 'Charging'],
+    'rbccps-iisc/video-metadata': ['Python', 'Video', 'Tele-driving', 'Metadata'],
   };
   const CACHE_TTL_MS = 60 * 60 * 1000;
   const CACHE_PREFIX = 'gh-cache:';
@@ -355,7 +369,19 @@
 
   const getProjectContext = (repo) => {
     const key = typeof repo === 'string' ? repo : repoKey(repo);
+    if (typeof repo === 'string') {
+      return SHOWCASE_CONTEXT[key] || 'No description provided.';
+    }
     return SHOWCASE_CONTEXT[key] || repo.description || 'No description provided.';
+  };
+
+  const getProjectTags = (repo) => {
+    const key = repoKey(repo);
+    if (SHOWCASE_TAGS[key]?.length) return SHOWCASE_TAGS[key];
+    const tags = [];
+    if (repo.language) tags.push(repo.language);
+    (repo.topics || []).slice(0, 3).forEach((topic) => tags.push(topic));
+    return tags;
   };
 
   const isPortfolioRepo = (repo, sourceLogin) => {
@@ -622,48 +648,33 @@
     };
 
     const createProjectCard = (repo) => {
-      const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'project-card project-card--featured';
+      const card = document.createElement('article');
+      card.className = 'project-showcase-card';
       card.setAttribute('data-repo-full', repoKey(repo));
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', `View details for ${repo.name}`);
 
-      const owner = repo.owner?.login || '';
-      const lang = repo.language || 'Unknown';
-      const topics = (repo.topics || []).slice(0, 4);
-      const topicHtml = topics.length
-        ? `<div class="project-topics">${topics.map((t) => `<span class="project-topic">${escapeHtml(t)}</span>`).join('')}</div>`
-        : '';
-      const demoHtml = repo.homepage
-        ? `<a class="project-demo-link" href="${escapeHtml(repo.homepage)}" target="_blank" rel="noopener"><i class="fa fa-external-link" aria-hidden="true"></i> Live demo</a>`
+      const tags = getProjectTags(repo);
+      const tagsHtml = tags.length
+        ? `<div class="project-showcase-tags">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>`
         : '';
 
       card.innerHTML = `
-        <div class="project-card-header">
-          <div>
-            <p class="project-card-owner">${escapeHtml(owner)}</p>
-            <h4 class="project-card-name">${escapeHtml(repo.name)}</h4>
-          </div>
-          <span class="project-card-meta"><i class="fa fa-star" aria-hidden="true"></i> ${repo.stargazers_count || 0}</span>
-        </div>
-        <p class="project-card-desc">${escapeHtml(getProjectContext(repo))}</p>
-        <div class="project-card-meta">
-          <span><span class="lang-dot" style="background:${getLangColor(lang)}"></span>${escapeHtml(lang)}</span>
-          <span><i class="fa fa-code-fork" aria-hidden="true"></i> ${repo.forks_count || 0}</span>
-          <span>Updated ${formatDate(repo.updated_at)}</span>
-        </div>
-        ${topicHtml}
-        <div class="project-card-footer">
-          ${demoHtml}
-          <span class="project-view-hint">View details</span>
-        </div>
+        <h3 class="project-showcase-title">${escapeHtml(repo.name)}</h3>
+        <p class="project-showcase-desc">${escapeHtml(getProjectContext(repo))}</p>
+        ${tagsHtml}
       `;
 
-      const demoLink = card.querySelector('.project-demo-link');
-      if (demoLink) {
-        demoLink.addEventListener('click', (event) => event.stopPropagation());
-      }
+      const open = () => openProjectModal(repoKey(repo));
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          open();
+        }
+      });
 
-      card.addEventListener('click', () => openProjectModal(repoKey(repo)));
       return card;
     };
 
