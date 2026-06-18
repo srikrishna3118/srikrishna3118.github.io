@@ -10,6 +10,8 @@
   --shadow: 0 16px 40px rgba(17, 24, 39, 0.08);
   --radius: 16px;
   --focus: rgba(0, 0, 119, 0.35);
+  --page-gutter: clamp(12px, 2.5vw, 28px);
+  --page-max-width: min(1400px, calc(100vw - 2 * var(--page-gutter)));
 }
 
 html[data-theme="dark"] {
@@ -27,6 +29,15 @@ html[data-theme="dark"] {
 
 html {
   scroll-behavior: smooth;
+  font-size: clamp(15px, 0.875rem + 0.25vw, 18px);
+}
+
+/* Override Bootstrap's fixed breakpoint caps so layout tracks viewport width */
+body .container {
+  width: 100%;
+  max-width: min(1400px, calc(100vw - clamp(24px, 5vw, 56px))) !important;
+  padding-left: clamp(12px, 2.5vw, 28px);
+  padding-right: clamp(12px, 2.5vw, 28px);
 }
 
 /* Keep anchored headings/sections from hiding under the sticky top bar */
@@ -43,6 +54,13 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
+  overflow-x: clip;
+}
+
+img,
+iframe,
+video {
+  max-width: 100%;
 }
 
 a {
@@ -178,8 +196,8 @@ a:focus {
 }
 
 .profile-photo {
-  width: 168px;
-  height: 168px;
+  width: clamp(120px, 14vw, 168px);
+  height: clamp(120px, 14vw, 168px);
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border);
@@ -926,8 +944,24 @@ html[data-theme="dark"] .projects-error {
     flex-wrap: wrap;
   }
 
+  .topnav {
+    width: 100%;
+    flex-wrap: wrap;
+    overflow: visible;
+    gap: 8px;
+  }
+
+  .topnav-link {
+    white-space: normal;
+  }
+
   .github-stats {
     grid-template-columns: 1fr;
+  }
+
+  .projects-search {
+    min-width: 0;
+    flex: 1 1 100%;
   }
 }
 
