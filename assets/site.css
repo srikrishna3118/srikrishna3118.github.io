@@ -38,6 +38,7 @@ html[data-theme="dark"] {
 html {
   scroll-behavior: smooth;
   font-size: clamp(15px, 0.875rem + 0.25vw, 18px);
+  width: 100%;
 }
 
 *[id] {
@@ -52,6 +53,8 @@ html {
 
 body {
   margin: 0;
+  width: 100%;
+  min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
@@ -131,6 +134,7 @@ main.page {
   justify-content: space-between;
   gap: 12px;
   padding: 10px 0;
+  flex-wrap: wrap;
 }
 
 .brand {
@@ -139,14 +143,15 @@ main.page {
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .topnav {
   display: flex;
   align-items: center;
-  gap: 14px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  flex-wrap: wrap;
+  gap: 10px;
+  overflow: visible;
 }
 
 .topnav-link {
@@ -360,6 +365,7 @@ main.page {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 16px;
 }
 
 .chip,
@@ -515,20 +521,25 @@ main.page {
   display: none;
 }
 
-/* Reveal animation */
+/* Reveal animation — content stays visible until JS enables animations */
 .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+html.js .reveal:not(.is-visible) {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 700ms ease, transform 700ms ease;
 }
 
-.reveal.is-visible {
+html.js .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  html.js .reveal:not(.is-visible) {
     opacity: 1;
     transform: none;
     transition: none;

@@ -744,6 +744,7 @@
   };
 
   const init = () => {
+    root.classList.add('js');
     initTheme();
     initSmoothAnchors();
     initScrollSpy();
