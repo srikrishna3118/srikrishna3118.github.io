@@ -353,14 +353,13 @@
   };
 
   const initImpactStats = () => {
-    const stats = Array.from(document.querySelectorAll('.stat-value[data-count]'));
-    if (stats.length === 0) return;
+    const block = document.querySelector('#hero .metrics-block');
+    if (!block) return;
 
     const run = () => {
-      stats.forEach((el) => {
-        const target = el.getAttribute('data-count') ?? '0';
+      block.querySelectorAll('.stat-value[data-count]').forEach((el) => {
         if (el.getAttribute('data-stat') === 'github-stars') return;
-        animateCount(el, target);
+        animateCount(el, el.getAttribute('data-count') ?? '0');
       });
     };
 
@@ -375,10 +374,79 @@
         },
         { threshold: 0.35 }
       );
-      const hero = document.getElementById('hero');
-      if (hero) observer.observe(hero);
-      else run();
+      observer.observe(block);
     } else {
+      run();
+    }
+  };
+
+  const initHeroTypewriter = () => {
+    const el = document.querySelector('[data-typewriter]');
+    if (!el || prefersReducedMotion) return;
+
+    const lines = [
+      'Researching co-simulation frameworks for cyber-physical multi-robot systems.',
+      'Building network-robot middleware for Industry 4.0 warehouse automation.',
+      'Exploring collaborative robotics and multi-robot network awareness.',
+    ];
+
+    let lineIndex = 0;
+    let charIndex = lines[0].length;
+    let deleting = false;
+
+    const tick = () => {
+      const current = lines[lineIndex];
+      if (!deleting) {
+        charIndex += 1;
+        el.textContent = current.slice(0, charIndex);
+        if (charIndex >= current.length) {
+          deleting = true;
+          window.setTimeout(tick, 2200);
+          return;
+        }
+        window.setTimeout(tick, 45);
+        return;
+      }
+
+      charIndex -= 1;
+      el.textContent = current.slice(0, charIndex);
+      if (charIndex <= 0) {
+        deleting = false;
+        lineIndex = (lineIndex + 1) % lines.length;
+        window.setTimeout(tick, 400);
+        return;
+      }
+      window.setTimeout(tick, 25);
+    };
+
+    window.setTimeout(tick, 1800);
+  };
+
+  const initGithubStatsAnimation = () => {
+    const block = document.querySelector('.projects-section .metrics-block');
+    if (!block) return;
+
+    const run = () => {
+      block.querySelectorAll('.github-stat-value[data-count]').forEach((el) => {
+        animateCount(el, el.getAttribute('data-count') ?? '0');
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            block.__githubStatsVisible = true;
+            run();
+            observer.disconnect();
+          });
+        },
+        { threshold: 0.25 }
+      );
+      observer.observe(block);
+    } else {
+      block.__githubStatsVisible = true;
       run();
     }
   };
@@ -442,10 +510,21 @@
       const reposEl = document.querySelector('[data-stat-repos]');
       const starsEl = document.querySelector('[data-stat-stars]');
       const followersEl = document.querySelector('[data-stat-followers]');
+      const reposCount = user?.public_repos ?? repos.length;
+      const followersCount = user?.followers ?? 0;
 
-      if (reposEl) reposEl.textContent = String(user?.public_repos ?? repos.length);
-      if (starsEl) starsEl.textContent = String(totalStars);
-      if (followersEl) followersEl.textContent = String(user?.followers ?? '—');
+      const setGithubStat = (el, value) => {
+        if (!el) return;
+        el.setAttribute('data-count', String(value));
+        const block = document.querySelector('.projects-section .metrics-block');
+        if (block?.__githubStatsVisible) {
+          animateCount(el, value);
+        }
+      };
+
+      setGithubStat(reposEl, reposCount);
+      setGithubStat(starsEl, totalStars);
+      setGithubStat(followersEl, followersCount);
 
       updateHeroStars(totalStars);
     };
@@ -518,6 +597,9 @@
       const topicHtml = topics.length
         ? `<div class="project-topics">${topics.map((t) => `<span class="project-topic">${escapeHtml(t)}</span>`).join('')}</div>`
         : '';
+      const demoHtml = repo.homepage
+        ? `<a class="project-demo-link" href="${escapeHtml(repo.homepage)}" target="_blank" rel="noopener"><i class="fa fa-external-link" aria-hidden="true"></i> Live demo</a>`
+        : '';
 
       card.innerHTML = `
         <div class="project-card-header">
@@ -531,7 +613,16 @@
           <span>Updated ${formatDate(repo.updated_at)}</span>
         </div>
         ${topicHtml}
+        <div class="project-card-footer">
+          ${demoHtml}
+          <span class="project-view-hint">View details</span>
+        </div>
       `;
+
+      const demoLink = card.querySelector('.project-demo-link');
+      if (demoLink) {
+        demoLink.addEventListener('click', (event) => event.stopPropagation());
+      }
 
       card.addEventListener('click', () => openProjectModal(repo.name));
       return card;
@@ -753,6 +844,8 @@
     initBackToTop();
     initTimeline();
     initImpactStats();
+    initHeroTypewriter();
+    initGithubStatsAnimation();
     initResearchFilters();
     initProjects();
   };

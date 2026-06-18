@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap">
-    <link rel="stylesheet" href="assets/site.css?v=5">
+    <link rel="stylesheet" href="assets/site.css?v=6">
 
     <title>Srikrishna Acharya</title>
   </head>
@@ -48,7 +48,7 @@
           <div class="hero-intro">
             <p class="hero-kicker">Senior Research Specialist &middot; Nokia</p>
             <h1 class="hero-title">Srikrishna Acharya</h1>
-            <p class="hero-tagline">Researching co-simulation frameworks for cyber-physical multi-robot systems.</p>
+            <p class="hero-tagline" data-typewriter>Researching co-simulation frameworks for cyber-physical multi-robot systems.</p>
           </div>
         </div>
         <p class="hero-bio">From networked robot middleware to Industry 4.0 warehouse automation — building tools that capture the complete cyber-physical aspects of multi-robot systems.</p>
@@ -63,25 +63,34 @@
           <li><a href="https://www.youtube.com/channel/UC3FEtz3vcAm18UdoF9_C8Mg" aria-label="YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
         </ul>
         <div class="quick-actions">
-          <a class="pill-btn" href="mailto:srikrishna3118@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i> Email</a>
-          <button class="pill-btn" type="button" data-copy="srikrishna3118@gmail.com"><i class="fa fa-copy" aria-hidden="true"></i> Copy</button>
+          <a class="pill-btn pill-btn-primary" href="files/Resume.pdf" download><i class="fa fa-download" aria-hidden="true"></i> Download Resume</a>
+          <a class="pill-btn pill-btn-primary" href="mailto:srikrishna3118@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i> Get in Touch</a>
+          <button class="pill-btn" type="button" data-copy="srikrishna3118@gmail.com"><i class="fa fa-copy" aria-hidden="true"></i> Copy email</button>
         </div>
-        <div class="impact-stats" aria-label="Research impact">
-          <div class="stat-card">
-            <span class="stat-value" data-count="7" data-stat="publications">0</span>
-            <span class="stat-label">Publications</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-value" data-count="2" data-stat="talks">0</span>
-            <span class="stat-label">Talks</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-value" data-count="10" data-stat="years">0</span>
-            <span class="stat-label">Years in Research</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-value" data-count="0" data-stat="github-stars">0</span>
-            <span class="stat-label">GitHub Stars</span>
+        <p class="contact-meta">
+          <span><i class="fa fa-envelope" aria-hidden="true"></i> srikrishna3118@gmail.com</span>
+          <span class="contact-meta-sep" aria-hidden="true">&middot;</span>
+          <span><i class="fa fa-map-marker" aria-hidden="true"></i> Bengaluru, India</span>
+        </p>
+        <div class="metrics-block" aria-label="Research metrics">
+          <p class="metrics-kicker">Research metrics</p>
+          <div class="impact-stats">
+            <div class="stat-card">
+              <span class="stat-value" data-count="7" data-stat="publications">0</span>
+              <span class="stat-label">Publications</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" data-count="2" data-stat="talks">0</span>
+              <span class="stat-label">Talks</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" data-count="10" data-stat="years">0</span>
+              <span class="stat-label">Years in Research</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" data-count="0" data-stat="github-stars">0</span>
+              <span class="stat-label">GitHub Stars</span>
+            </div>
           </div>
         </div>
       </section>
@@ -93,6 +102,14 @@
         <a href="http://cds.iisc.ac.in/faculty/simmhan/">Prof Yogesh Simmhan</a>, and I continue to collaborate with the
         <a href="https://aml.ece.iisc.ac.in/index.php/Autonomous_Machines_Laboratory">Autonomous Machines Lab</a>
         on collaborative robotics, learning-based robots, and network-enabled multi-robot systems.
+        <div class="expertise-chips" aria-label="Core research areas">
+          <span class="expertise-chip">Co-Simulation</span>
+          <span class="expertise-chip">Collaborative Robotics</span>
+          <span class="expertise-chip">Network-Robot Middleware</span>
+          <span class="expertise-chip">Cyber-Physical Systems</span>
+          <span class="expertise-chip">IoT / Smart Cities</span>
+          <span class="expertise-chip">ROS / Robot Networks</span>
+        </div>
         <div class="sponsor-embed" data-reveal>
           <iframe src="https://github.com/sponsors/srikrishna3118/button" title="Sponsor srikrishna3118" height="35" width="116" style="border: 0;"></iframe>
         </div>
@@ -106,7 +123,15 @@
           <div class="exp-body">
             <div class="exp-role">Senior Research Specialist</div>
             <div class="exp-org">Nokia · Bengaluru, India (Hybrid)</div>
-            <p class="exp-desc">ST NSD Radio Interface &amp; Access Group (RIAG).</p>
+            <ul class="exp-bullets">
+              <li>Radio interface and access research in ST NSD RIAG</li>
+              <li>Industry 4.0 and warehouse automation co-simulation</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">5G</span>
+              <span class="exp-tag">RIAG</span>
+              <span class="exp-tag">Co-Simulation</span>
+            </div>
           </div>
         </div>
         <div class="exp-row" data-reveal>
@@ -114,7 +139,16 @@
           <div class="exp-body">
             <div class="exp-role">PhD Scholar</div>
             <div class="exp-org">Indian Institute of Science (IISc)</div>
-            <p class="exp-desc">Robert Bosch Centre for Cyber-Physical Systems (RBCCPS).</p>
+            <ul class="exp-bullets">
+              <li>Built CORNET co-simulation middleware for robot networks</li>
+              <li>Published at COMSNETS and IROS on multi-robot communication and control</li>
+              <li>Robert Bosch Centre for Cyber-Physical Systems (RBCCPS)</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">CORNET</span>
+              <span class="exp-tag">IROS</span>
+              <span class="exp-tag">RBCCPS</span>
+            </div>
           </div>
         </div>
         <div class="exp-row" data-reveal>
@@ -122,7 +156,14 @@
           <div class="exp-body">
             <div class="exp-role">Technical Associate</div>
             <div class="exp-org">IISc · RBCCPS</div>
-            <p class="exp-desc">Inter-disciplinary smart neighborhood projects; IoT for Smart City Task Force (iot4sctf).</p>
+            <ul class="exp-bullets">
+              <li>Inter-disciplinary smart neighborhood projects</li>
+              <li>IoT platform for Smart City Task Force (iot4sctf)</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">IoT</span>
+              <span class="exp-tag">Smart Cities</span>
+            </div>
           </div>
         </div>
         <div class="exp-row" data-reveal>
@@ -130,7 +171,14 @@
           <div class="exp-body">
             <div class="exp-role">Associate, Technology</div>
             <div class="exp-org">Zenatix Solutions · Gurgaon, India</div>
-            <p class="exp-desc">Early team member; hardware/firmware design for robust field deployments.</p>
+            <ul class="exp-bullets">
+              <li>Early team member building energy analytics platform</li>
+              <li>Hardware and firmware design for robust field deployments</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="exp-tag">IoT</span>
+              <span class="exp-tag">Embedded Systems</span>
+            </div>
           </div>
         </div>
         <div class="exp-row" data-reveal>
@@ -177,21 +225,24 @@
 
       <h2 class="section-title" id="certifications" data-reveal>Certifications</h2>
 
-      <div class="entry-list">
-        <p class="paper" data-reveal>
-          <span class="papertitle">Data Operations Practitioner Training</span><br>
-          <span class="conf">appliedAI Initiative GmbH</span><br>
-          <span class="conf">Issued: 12 December 2025 – Does not expire</span><br>
+      <div class="cert-grid">
+        <article class="cert-card" data-reveal>
+          <h3 class="cert-title">Data Operations Practitioner Training</h3>
+          <p class="cert-issuer">appliedAI Initiative GmbH</p>
+          <p class="cert-date">Dec 2025 · No expiry</p>
           <a class="tag" href="https://www.credential.net/ae609341-8dae-4f73-869d-8ae50aeec627?utm_source=linkedin&utm_medium=social" target="_blank" rel="noopener">credential</a>
-        </p>
+        </article>
       </div>
 
       <h2 class="section-title" id="projects" data-reveal>Projects</h2>
       <section class="projects-section" data-reveal aria-label="GitHub projects">
-        <div class="github-stats" id="githubStats" aria-live="polite">
-          <div class="github-stat"><span class="github-stat-value" data-stat-repos>&mdash;</span><span class="github-stat-label">Public repos</span></div>
-          <div class="github-stat"><span class="github-stat-value" data-stat-stars>&mdash;</span><span class="github-stat-label">Total stars</span></div>
-          <div class="github-stat"><span class="github-stat-value" data-stat-followers>&mdash;</span><span class="github-stat-label">Followers</span></div>
+        <div class="metrics-block" aria-label="GitHub activity">
+          <p class="metrics-kicker">GitHub activity</p>
+          <div class="github-stats" id="githubStats" aria-live="polite">
+            <div class="github-stat"><span class="github-stat-value" data-stat-repos data-count="0">&mdash;</span><span class="github-stat-label">Public repos</span></div>
+            <div class="github-stat"><span class="github-stat-value" data-stat-stars data-count="0">&mdash;</span><span class="github-stat-label">Total stars</span></div>
+            <div class="github-stat"><span class="github-stat-value" data-stat-followers data-count="0">&mdash;</span><span class="github-stat-label">Followers</span></div>
+          </div>
         </div>
         <div class="projects-toolbar">
           <label class="sr-only" for="projectSearch">Search projects</label>
@@ -222,13 +273,13 @@
           <span class="papertitle">Rapid prototyping of Industry 4.0 use cases for warehouse automation
           using a Network-Robot Co-Simulation Framework</span><br>
           <span class="thisauthor"><strong>Srikrishna Acharya</strong></span>, Parv Maheshwari, Mukunda Bharatheesa, Amrutur Bharadwaj, Yogesh Simmhan<br>
-          <span class="conf"><a class="confshort" href="/files/FINAL_ICRA2022.pdf">Arxiv</a> | Yet to be publish</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="/files/FINAL_ICRA2022.pdf">Arxiv</a> | Yet to be publish</span><br>
         </p>
 
         <p class="paper" data-reveal data-research="co-simulation robotics">
           <span class="papertitle">CORNET2.0: A Co-Simulation Middleware for Robot Networks</span><br>
           <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Amrutur Bharadwaj, Mukunda Bharatheesa, Yogesh Simmhan<br>
-          <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9668311/proceeding">COMSNETS 2022</a> | 2022 14th International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="https://ieeexplore.ieee.org/xpl/conhome/9668311/proceeding">COMSNETS 2022</a> | 2022 14th International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
           <a class="tag" href="https://ieeexplore.ieee.org/document/9668501" target="_blank" rel="noopener">paper</a>
           <span class="tagsep">|</span>
           <a class="tag" href="https://github.com/srikrishna3118/py_cornet" target="_blank" rel="noopener">github</a>
@@ -237,14 +288,14 @@
         <p class="paper" data-reveal data-research="co-simulation multi-robot robotics">
           <span class="papertitle">A Co-Simulation Framework for Communication and Control in Autonomous Multi-Robot Systems</span><br>
           <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Mukunda Bharatheesha, Yogesh Simmhan, Bharadwaj Amrutur<br>
-          <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/10341341/proceeding">IROS</a> | 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="https://ieeexplore.ieee.org/xpl/conhome/10341341/proceeding">IROS</a> | 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</span><br>
           <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/10342407" target="_blank" rel="noopener">paper</a>
         </p>
 
         <p class="paper" data-reveal data-research="multi-robot co-simulation">
           <span class="papertitle">Network Emulation For Tele-driving Application Development</span><br>
           <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, S Sadgun S Devanahalli , Alok Rawat, Varghese P Kuruvilla, Pratik Sharma, Bharadwaj Amrutur, Ashish Joglekar, Raghu Krishnapuram, Yogesh Simmhan, Himanshu Tyagi<br>
-          <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">COMSNETS 2021</a> | 2021 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">COMSNETS 2021</a> | 2021 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
           <a class="tag" href="https://ieeexplore.ieee.org/document/9352914" target="_blank" rel="noopener">demo paper</a>
           <span class="tagsep">|</span>
           <a class="tag" href="https://www.youtube.com/watch?v=NBMEQNX4m0I" target="_blank" rel="noopener">presentation</a>
@@ -253,14 +304,14 @@
         <p class="paper" data-reveal data-research="multi-robot robotics">
           <span class="papertitle">Network Based Multi-Bot Awareness</span><br>
           G Dhanaprakaash, Bishal Jaiswal, <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Anush Kumar, Aruul Mozhi Varman, Kavish Shah, Mohitvishnu Srinivas Gadde, Sourav Mishra, Aditya Gopalan, Bharadwaj Amrutur, Himanshu Tyagi, Preetam Patil, Raghu Krishnapuram, Soumya Subhra Banerjee, Suresh Sundaram<br>
-          <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">COMSNETS 2021</a> | 2021 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">COMSNETS 2021</a> | 2021 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
           <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9352810" target="_blank" rel="noopener">poster</a>
         </p>
 
         <p class="paper" data-reveal data-research="co-simulation robotics">
           <span class="papertitle">CORNET: A Co-Simulation Middleware for Robot Networks</span><br>
           <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Amrutur Bharadwaj, Yogesh Simmhan, Aditya Gopalan, Parimal Parag , Himanshu Tyagi<br>
-          <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9011703/proceeding">COMSNETS 2020</a> | 2020 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="https://ieeexplore.ieee.org/xpl/conhome/9011703/proceeding">COMSNETS 2020</a> | 2020 International Conference on COMmunication Systems & NETworkS (COMSNETS)</span><br>
           <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9027459" target="_blank" rel="noopener">paper</a>
           <span class="tagsep">|</span>
           <a class="tag" href="https://github.com/srikrishna3118/CORNET" target="_blank" rel="noopener">github</a>
@@ -269,7 +320,7 @@
         <p class="paper" data-reveal data-research="robotics">
           <span class="papertitle">PUF based secure framework for hardware and software security of drones</span><br>
           Vishal Pal, <span class="thisauthor"><strong>Srikrishna Acharya</strong>*</span>, Somesh Shrivastav, Sourav Saha, Ashish Joglekar, Bharadwaj Amrutur<br>
-          <span class="conf"><a class="confshort" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">AsianHOST</a> | 2020 Asian Hardware Oriented Security and Trust Symposium (AsianHOST)</span><br>
+          <span class="conf"><a class="confshort pub-venue" href="https://ieeexplore.ieee.org/xpl/conhome/9352735/proceeding">AsianHOST</a> | 2020 Asian Hardware Oriented Security and Trust Symposium (AsianHOST)</span><br>
           <a class="tag" href="https://ieeexplore.ieee.org/abstract/document/9358264" target="_blank" rel="noopener">short paper</a>
         </p>
       </div>
@@ -318,6 +369,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
-    <script src="assets/site.js?v=5"></script>
+    <script src="assets/site.js?v=6"></script>
   </body>
 </html>
