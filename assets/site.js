@@ -238,10 +238,11 @@
     'srikrishna3118/py_cornet',
     'srikrishna3118/modern-systems-engineering',
     'srikrishna3118/inverted_pendulum_control',
-    'artparkindia/teleoperations',
+    'rbccps-iisc/CORNET2.0',
   ];
   const CACHE_TTL_MS = 60 * 60 * 1000;
   const CACHE_PREFIX = 'gh-cache:';
+  const COMMIT_SEARCH_ACCEPT = 'application/vnd.github.cloak-preview+json';
 
   const LANG_COLORS = {
     JavaScript: '#f1e05a',
@@ -337,6 +338,37 @@
     if (repo.name.endsWith('.github.io')) return false;
     if (repo.name === `${sourceLogin}.github.io`) return false;
     return true;
+  };
+
+  const fetchContributedOrgRepos = async (orgLogin, onRateLimited) => {
+    const repos = new Set();
+    const maxPages = 10;
+
+    for (let page = 1; page <= maxPages; page += 1) {
+      const query = encodeURIComponent(`author:${GITHUB_USER} org:${orgLogin}`);
+      const cacheKey = `${GITHUB_USER}:commits:${orgLogin}:p${page}`;
+      const result = await githubFetch(
+        `https://api.github.com/search/commits?q=${query}&per_page=100&page=${page}`,
+        cacheKey,
+        COMMIT_SEARCH_ACCEPT
+      );
+
+      if (result.rateLimited) onRateLimited();
+
+      const items = result.data?.items;
+      if (!Array.isArray(items) || items.length === 0) break;
+
+      items.forEach((item) => {
+        const fullName = item.repository?.full_name;
+        if (fullName && !fullName.endsWith('.github.io')) {
+          repos.add(fullName);
+        }
+      });
+
+      if (items.length < 100) break;
+    }
+
+    return repos;
   };
 
   const animateCount = (el, target) => {
@@ -694,7 +726,7 @@
         rateLimited
           ? 'Showing cached GitHub data (API rate limit reached). Data may be slightly stale.'
           : filteredRepos.length
-            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} from personal, RBCCPS, DREAM:Lab, and ARTPARK`
+            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} you contributed to across personal and lab orgs`
             : 'No projects match your search.'
       );
     };
@@ -812,6 +844,11 @@
       moreEl.innerHTML = '';
 
       try {
+        const orgSources = GITHUB_SOURCES.filter((source) => source.type === 'org');
+        const markRateLimited = () => {
+          rateLimited = true;
+        };
+
         const repoRequests = GITHUB_SOURCES.map((source) => {
           const url = source.type === 'org'
             ? `https://api.github.com/orgs/${source.login}/repos?per_page=100&sort=updated&type=public`
@@ -819,18 +856,35 @@
           return githubFetch(url, `${source.login}:repos`).then((result) => ({ ...result, source }));
         });
 
-        const [repoResults, userResult] = await Promise.all([
+        const contributedRequests = orgSources.map((source) =>
+          fetchContributedOrgRepos(source.login, markRateLimited).then((repos) => ({
+            login: source.login,
+            repos,
+          }))
+        );
+
+        const [repoResults, userResult, ...contributedResults] = await Promise.all([
           Promise.all(repoRequests),
           githubFetch(`https://api.github.com/users/${GITHUB_USER}`, `${GITHUB_USER}:user`),
+          ...contributedRequests,
         ]);
 
-        rateLimited = repoResults.some((result) => result.rateLimited) || Boolean(userResult.rateLimited);
+        rateLimited = rateLimited
+          || repoResults.some((result) => result.rateLimited)
+          || Boolean(userResult.rateLimited);
+
+        const contributedByOrg = new Map(
+          contributedResults.map(({ login, repos }) => [login, repos])
+        );
 
         const merged = new Map();
         repoResults.forEach(({ data, source }) => {
           const repos = Array.isArray(data) ? data : [];
+          const contributed = contributedByOrg.get(source.login);
+
           repos.forEach((repo) => {
             if (!isPortfolioRepo(repo, source.login)) return;
+            if (source.type === 'org' && !contributed?.has(repoKey(repo))) return;
             merged.set(repoKey(repo), { ...repo, _sourceLabel: source.label });
           });
         });
