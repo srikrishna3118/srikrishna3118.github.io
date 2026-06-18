@@ -232,14 +232,34 @@
     { login: 'dream-lab', type: 'org', label: 'DREAM:Lab' },
     { login: 'artparkindia', type: 'org', label: 'ARTPARK' },
   ];
-  const FEATURED_REPOS = [
-    'srikrishna3118/CORNET',
+  const SHOWCASE_REPOS = [
     'rbccps-iisc/CORNET2.0',
-    'srikrishna3118/py_cornet',
+    'rbccps-iisc/CORNET',
     'srikrishna3118/modern-systems-engineering',
-    'srikrishna3118/inverted_pendulum_control',
-    'rbccps-iisc/CORNET2.0',
+    'rbccps-iisc/5g_opt_drl',
+    'srikrishna3118/nvidia_auvidea_j120support',
+    'rbccps-iisc/AutonomousDrones',
+    'rbccps-iisc/DronePort_Controller',
+    'rbccps-iisc/video-metadata',
   ];
+  const SHOWCASE_CONTEXT = {
+    'rbccps-iisc/CORNET2.0':
+      'Network–robot co-simulation middleware from my PhD at RBCCPS, IISc. Couples robot simulators with network emulators to prototype Industry 4.0 warehouse automation. Published at COMSNETS 2022.',
+    'rbccps-iisc/CORNET':
+      'First-generation co-simulation middleware for multi-UAV and robot networks. Jointly models flight dynamics (Gazebo/ROS) and communication (NS-3) for cyber-physical system design. Published at COMSNETS 2020.',
+    'srikrishna3118/modern-systems-engineering':
+      'A practical curriculum for systems engineering — curated engineering blogs, hands-on exercises, and patterns for building reliable distributed systems.',
+    'rbccps-iisc/5g_opt_drl':
+      '5G radio-resource optimization using deep reinforcement learning — exploring intelligent RAN control for next-generation wireless research at RBCCPS.',
+    'srikrishna3118/nvidia_auvidea_j120support':
+      'Device-tree and kernel support for the NVIDIA Auvidea J120 carrier board on Jetson — hardware bring-up for embedded robotics and edge deployments.',
+    'rbccps-iisc/AutonomousDrones':
+      'Code and parameters for autonomous drone research at RBCCPS — spanning networked UAV middleware, teleoperations, and multi-robot awareness.',
+    'rbccps-iisc/DronePort_Controller':
+      'Automated drone landing-pad controller that manages touch-down, alignment, and charging to extend continuous flight operations.',
+    'rbccps-iisc/video-metadata':
+      'Video stream metadata tooling for tele-driving and network-aware robotics experiments with realistic media pipelines.',
+  };
   const CACHE_TTL_MS = 60 * 60 * 1000;
   const CACHE_PREFIX = 'gh-cache:';
   const COMMIT_SEARCH_ACCEPT = 'application/vnd.github.cloak-preview+json';
@@ -332,6 +352,11 @@
   const getLangColor = (lang) => LANG_COLORS[lang] || '#8b949e';
 
   const repoKey = (repo) => repo.full_name || `${repo.owner?.login}/${repo.name}`;
+
+  const getProjectContext = (repo) => {
+    const key = typeof repo === 'string' ? repo : repoKey(repo);
+    return SHOWCASE_CONTEXT[key] || repo.description || 'No description provided.';
+  };
 
   const isPortfolioRepo = (repo, sourceLogin) => {
     if (repo.fork) return false;
@@ -525,17 +550,12 @@
   const initProjects = () => {
     const projectsEl = document.getElementById('projectsGrid');
     const statusEl = document.getElementById('projectsStatus');
-    const searchEl = document.getElementById('projectSearch');
-    const langFiltersEl = document.getElementById('languageFilters');
-    const sortButtons = Array.from(document.querySelectorAll('.sort-btn[data-sort]'));
     const modal = document.getElementById('projectModal');
 
     if (!projectsEl) return;
 
     let allRepos = [];
-    let filteredRepos = [];
-    let activeLanguage = 'all';
-    let activeSort = 'stars';
+    let showcaseRepos = [];
     let rateLimited = false;
 
     const setStatus = (message, isError = false) => {
@@ -573,52 +593,23 @@
       updateHeroStars(totalStars);
     };
 
-    const getLanguages = (repos) => {
-      const langs = new Set();
-      repos.forEach((repo) => {
-        if (repo.language) langs.add(repo.language);
-      });
-      return Array.from(langs).sort((a, b) => a.localeCompare(b));
+    const getSourceLabel = (ownerLogin) => {
+      return GITHUB_SOURCES.find((source) => source.login === ownerLogin)?.label || ownerLogin;
     };
 
-    const renderLanguageFilters = (repos) => {
-      if (!langFiltersEl) return;
-      const langs = getLanguages(repos);
-      langFiltersEl.innerHTML = '';
+    const ensureShowcaseRepos = async (repoMap) => {
+      const missing = SHOWCASE_REPOS.filter((key) => !repoMap.has(key));
+      await Promise.all(
+        missing.map(async (key) => {
+          const result = await githubFetch(`https://api.github.com/repos/${key}`, `${key}:meta`);
+          if (result.rateLimited) rateLimited = true;
+          if (!result.data?.full_name) return;
+          const owner = key.split('/')[0];
+          repoMap.set(key, { ...result.data, _sourceLabel: getSourceLabel(owner) });
+        })
+      );
 
-      const allBtn = document.createElement('button');
-      allBtn.type = 'button';
-      allBtn.className = `lang-chip${activeLanguage === 'all' ? ' is-active' : ''}`;
-      allBtn.textContent = 'All languages';
-      allBtn.addEventListener('click', () => {
-        activeLanguage = 'all';
-        renderLanguageFilters(allRepos);
-        applyFilters();
-      });
-      langFiltersEl.appendChild(allBtn);
-
-      langs.forEach((lang) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = `lang-chip${activeLanguage === lang ? ' is-active' : ''}`;
-        btn.innerHTML = `<span class="lang-dot" style="background:${getLangColor(lang)}"></span>${lang}`;
-        btn.addEventListener('click', () => {
-          activeLanguage = lang;
-          renderLanguageFilters(allRepos);
-          applyFilters();
-        });
-        langFiltersEl.appendChild(btn);
-      });
-    };
-
-    const sortRepos = (repos) => {
-      const sorted = [...repos];
-      if (activeSort === 'updated') {
-        sorted.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-      } else {
-        sorted.sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0));
-      }
-      return sorted;
+      showcaseRepos = SHOWCASE_REPOS.map((key) => repoMap.get(key)).filter(Boolean);
     };
 
     const escapeHtml = (value) => {
@@ -633,7 +624,7 @@
     const createProjectCard = (repo) => {
       const card = document.createElement('button');
       card.type = 'button';
-      card.className = `project-card${FEATURED_REPOS.includes(repoKey(repo)) ? ' project-card--featured' : ''}`;
+      card.className = 'project-card project-card--featured';
       card.setAttribute('data-repo-full', repoKey(repo));
 
       const owner = repo.owner?.login || '';
@@ -654,7 +645,7 @@
           </div>
           <span class="project-card-meta"><i class="fa fa-star" aria-hidden="true"></i> ${repo.stargazers_count || 0}</span>
         </div>
-        <p class="project-card-desc">${escapeHtml(repo.description || 'No description provided.')}</p>
+        <p class="project-card-desc">${escapeHtml(getProjectContext(repo))}</p>
         <div class="project-card-meta">
           <span><span class="lang-dot" style="background:${getLangColor(lang)}"></span>${escapeHtml(lang)}</span>
           <span><i class="fa fa-code-fork" aria-hidden="true"></i> ${repo.forks_count || 0}</span>
@@ -689,42 +680,13 @@
     };
 
     const renderProjects = () => {
-      const featuredSet = new Set(FEATURED_REPOS);
-      const sorted = sortRepos(filteredRepos);
-      const pinned = FEATURED_REPOS
-        .map((key) => sorted.find((repo) => repoKey(repo) === key))
-        .filter(Boolean);
-      const rest = sorted.filter((repo) => !featuredSet.has(repoKey(repo)));
-      renderGrid(projectsEl, [...pinned, ...rest], 'No projects match your filters.');
-    };
-
-    const applyFilters = () => {
-      const query = (searchEl?.value || '').trim().toLowerCase();
-      filteredRepos = allRepos.filter((repo) => {
-        const haystack = [
-          repoKey(repo),
-          repo.name,
-          repo.owner?.login || '',
-          repo._sourceLabel || '',
-          repo.description || '',
-          ...(repo.topics || []),
-          repo.language || '',
-        ]
-          .join(' ')
-          .toLowerCase();
-
-        const matchesQuery = !query || haystack.includes(query);
-        const matchesLang = activeLanguage === 'all' || repo.language === activeLanguage;
-        return matchesQuery && matchesLang;
-      });
-
-      renderProjects();
+      renderGrid(projectsEl, showcaseRepos, 'Could not load highlighted projects.');
       setStatus(
         rateLimited
           ? 'Showing cached GitHub data (API rate limit reached). Data may be slightly stale.'
-          : filteredRepos.length
-            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} I've contributed to across personal and lab orgs`
-            : 'No projects match your search.'
+          : showcaseRepos.length
+            ? `${showcaseRepos.length} highlighted project${showcaseRepos.length === 1 ? '' : 's'}`
+            : 'Could not load highlighted projects.'
       );
     };
 
@@ -750,7 +712,7 @@
       const readmeEl = document.getElementById('projectModalReadme');
 
       if (titleEl) titleEl.textContent = fullName;
-      if (descEl) descEl.textContent = repo.description || 'No description provided.';
+      if (descEl) descEl.textContent = getProjectContext(repo);
       if (metaEl) {
         metaEl.innerHTML = `
           <span><i class="fa fa-star" aria-hidden="true"></i> ${repo.stargazers_count || 0} stars</span>
@@ -793,7 +755,7 @@
         const totalBytes = Object.values(langs).reduce((sum, n) => sum + n, 0);
 
         if (titleEl) titleEl.textContent = detail.full_name || repo.name;
-        if (descEl) descEl.textContent = detail.description || 'No description provided.';
+        if (descEl) descEl.textContent = getProjectContext(repo);
 
         if (langEl && totalBytes > 0) {
           const segments = Object.entries(langs)
@@ -874,6 +836,7 @@
         );
 
         const merged = new Map();
+
         repoResults.forEach(({ data, source }) => {
           const repos = Array.isArray(data) ? data : [];
           const contributed = contributedByOrg.get(source.login);
@@ -886,26 +849,21 @@
         });
 
         allRepos = Array.from(merged.values());
-        filteredRepos = allRepos;
+        await ensureShowcaseRepos(merged);
+
+        showcaseRepos.forEach((repo) => {
+          if (!allRepos.some((entry) => repoKey(entry) === repoKey(repo))) {
+            allRepos.push(repo);
+          }
+        });
 
         updateGithubStats(allRepos, userResult.data);
-        renderLanguageFilters(allRepos);
-        applyFilters();
+        renderProjects();
       } catch {
         setStatus('Unable to load GitHub projects. Visit the profile on GitHub instead.', true);
         projectsEl.innerHTML = `<p class="projects-error">Could not load projects. <a href="https://github.com/${GITHUB_USER}" target="_blank" rel="noopener">View ${GITHUB_USER} on GitHub</a></p>`;
       }
     };
-
-    searchEl?.addEventListener('input', applyFilters);
-
-    sortButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        activeSort = btn.getAttribute('data-sort') || 'stars';
-        sortButtons.forEach((b) => b.classList.toggle('is-active', b === btn));
-        applyFilters();
-      });
-    });
 
     modal?.querySelectorAll('[data-modal-close]').forEach((el) => {
       el.addEventListener('click', closeModal);
