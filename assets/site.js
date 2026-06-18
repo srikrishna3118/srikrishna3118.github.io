@@ -523,15 +523,14 @@
   };
 
   const initProjects = () => {
-    const featuredEl = document.getElementById('featuredProjects');
-    const moreEl = document.getElementById('moreProjects');
+    const projectsEl = document.getElementById('projectsGrid');
     const statusEl = document.getElementById('projectsStatus');
     const searchEl = document.getElementById('projectSearch');
     const langFiltersEl = document.getElementById('languageFilters');
     const sortButtons = Array.from(document.querySelectorAll('.sort-btn[data-sort]'));
     const modal = document.getElementById('projectModal');
 
-    if (!featuredEl || !moreEl) return;
+    if (!projectsEl) return;
 
     let allRepos = [];
     let filteredRepos = [];
@@ -634,7 +633,7 @@
     const createProjectCard = (repo) => {
       const card = document.createElement('button');
       card.type = 'button';
-      card.className = 'project-card';
+      card.className = `project-card${FEATURED_REPOS.includes(repoKey(repo)) ? ' project-card--featured' : ''}`;
       card.setAttribute('data-repo-full', repoKey(repo));
 
       const owner = repo.owner?.login || '';
@@ -692,13 +691,11 @@
     const renderProjects = () => {
       const featuredSet = new Set(FEATURED_REPOS);
       const sorted = sortRepos(filteredRepos);
-      const featured = FEATURED_REPOS
+      const pinned = FEATURED_REPOS
         .map((key) => sorted.find((repo) => repoKey(repo) === key))
         .filter(Boolean);
-      const more = sorted.filter((repo) => !featuredSet.has(repoKey(repo)));
-
-      renderGrid(featuredEl, featured, 'No featured projects match your filters.');
-      renderGrid(moreEl, more, 'No additional projects match your filters.');
+      const rest = sorted.filter((repo) => !featuredSet.has(repoKey(repo)));
+      renderGrid(projectsEl, [...pinned, ...rest], 'No projects match your filters.');
     };
 
     const applyFilters = () => {
@@ -840,8 +837,7 @@
 
     const loadProjects = async () => {
       setStatus('Loading projects from GitHub...');
-      featuredEl.innerHTML = '<p class="projects-loading">Loading featured projects...</p>';
-      moreEl.innerHTML = '';
+      projectsEl.innerHTML = '<p class="projects-loading">Loading projects...</p>';
 
       try {
         const orgSources = GITHUB_SOURCES.filter((source) => source.type === 'org');
@@ -897,8 +893,7 @@
         applyFilters();
       } catch {
         setStatus('Unable to load GitHub projects. Visit the profile on GitHub instead.', true);
-        featuredEl.innerHTML = '<p class="projects-error">Could not load projects.</p>';
-        moreEl.innerHTML = `<p class="projects-empty"><a href="https://github.com/${GITHUB_USER}" target="_blank" rel="noopener">View ${GITHUB_USER} on GitHub</a></p>`;
+        projectsEl.innerHTML = `<p class="projects-error">Could not load projects. <a href="https://github.com/${GITHUB_USER}" target="_blank" rel="noopener">View ${GITHUB_USER} on GitHub</a></p>`;
       }
     };
 

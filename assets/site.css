@@ -943,7 +943,7 @@ html[data-theme="dark"] .projects-error {
   border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
 }
 
-.featured-grid .project-card {
+.featured-grid .project-card--featured {
   border-left: 4px solid var(--accent);
 }
 
