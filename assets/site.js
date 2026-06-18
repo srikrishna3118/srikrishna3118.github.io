@@ -726,7 +726,7 @@
         rateLimited
           ? 'Showing cached GitHub data (API rate limit reached). Data may be slightly stale.'
           : filteredRepos.length
-            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} you contributed to across personal and lab orgs`
+            ? `${filteredRepos.length} project${filteredRepos.length === 1 ? '' : 's'} I've contributed to across personal and lab orgs`
             : 'No projects match your search.'
       );
     };
