@@ -1402,3 +1402,346 @@ html[data-theme="dark"] .projects-error {
     opacity: 1;
   }
 }
+
+/* ===========================================================
+   Interactive enhancements
+   =========================================================== */
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 55%, #f09228)
+  );
+  z-index: 1400;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    transition: none;
+  }
+}
+
+/* Hero ambient network canvas */
+.hero {
+  position: relative;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: -28px -8px auto;
+  width: calc(100% + 16px);
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, #000 55%, transparent 100%);
+  mask-image: radial-gradient(120% 100% at 50% 0%, #000 55%, transparent 100%);
+}
+
+.hero > *:not(.hero-canvas) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Animated gradient hero title */
+html.js .hero-title {
+  background: linear-gradient(
+    100deg,
+    var(--text) 0%,
+    var(--text) 35%,
+    var(--accent) 50%,
+    var(--text) 65%,
+    var(--text) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hero-title-sheen 9s ease-in-out infinite;
+}
+
+@keyframes hero-title-sheen {
+  0%, 100% { background-position: 120% 0; }
+  50% { background-position: -20% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .hero-title {
+    animation: none;
+    background-position: 50% 0;
+  }
+}
+
+/* Cursor spotlight glow for interactive cards */
+.stat-card,
+.cert-card,
+.project-showcase-card,
+.achievement-item a {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before,
+.cert-card::before,
+.project-showcase-card::before,
+.award-card::before,
+.achievement-item a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms ease;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 60%
+  );
+}
+
+.stat-card:hover::before,
+.cert-card:hover::before,
+.project-showcase-card:hover::before,
+.award-card:hover::before,
+.achievement-item a:hover::before {
+  opacity: 1;
+}
+
+/* Keep card content above the glow layer */
+.stat-card > *,
+.cert-card > *,
+.project-showcase-card > *,
+.award-card > *,
+.achievement-item a > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle pointer tilt (JS-driven) */
+.project-showcase-card {
+  transform: perspective(900px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg)) translateY(0);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-showcase-card {
+    transform: none !important;
+  }
+}
+
+/* Experience timeline rail with scroll-driven fill */
+.exp-timeline {
+  position: relative;
+  padding-left: 26px;
+}
+
+.exp-timeline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.exp-timeline-fill {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 2px;
+  height: 0;
+  border-radius: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 50%, #f09228)
+  );
+  z-index: 1;
+}
+
+.exp-row {
+  position: relative;
+}
+
+.exp-row::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 22px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--border);
+  z-index: 2;
+  transition: border-color 320ms ease, background 320ms ease, box-shadow 320ms ease, transform 320ms ease;
+}
+
+html.js .exp-row.is-visible::before {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 30%, var(--card));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+  transform: scale(1.05);
+}
+
+@media (max-width: 640px) {
+  .exp-timeline {
+    padding-left: 22px;
+  }
+
+  .exp-row::before {
+    left: -22px;
+    top: 6px;
+  }
+}
+
+/* Staggered reveal for grid children */
+html.js .exp-row.reveal,
+html.js .cert-card.reveal,
+html.js .paper.reveal {
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Copy-to-clipboard toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translate(-50%, 16px);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.88rem;
+  font-family: var(--font-mono);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+  z-index: 1600;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: opacity 220ms ease;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Awards & Recognition — medal cards */
+.awards-rail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 560px) {
+  .awards-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .awards-rail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.award-card {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(130% 150% at 0% 0%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 58%),
+    var(--card);
+  overflow: hidden;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.award-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
+}
+
+.award-medal {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--card);
+  background: conic-gradient(
+    from 140deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 45%, #f09228),
+    var(--accent)
+  );
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+
+.award-medal i {
+  font-size: 1.15rem;
+}
+
+.award-body {
+  min-width: 0;
+}
+
+.award-name {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.award-context {
+  margin: 0 0 11px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.award-year {
+  display: inline-block;
+  padding: 3px 11px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .award-card:hover {
+    transform: none;
+  }
+}

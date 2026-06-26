@@ -182,6 +182,18 @@
     }
   };
 
+  let toastTimer = null;
+  const showToast = (message) => {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => {
+      toast.classList.remove('is-visible');
+    }, 1800);
+  };
+
   const initCopyButtons = () => {
     const btn = document.querySelector('[data-copy]');
     if (!btn) return;
@@ -193,12 +205,477 @@
       const ok = await copyText(value);
       btn.textContent = ok ? 'Copied' : 'Copy failed';
       btn.disabled = true;
+      showToast(ok ? `Copied ${value}` : 'Copy failed');
 
       window.setTimeout(() => {
         btn.textContent = original;
         btn.disabled = false;
       }, 1200);
     });
+  };
+
+  const initScrollProgress = () => {
+    const bar = document.getElementById('scrollProgress');
+    if (!bar) return;
+
+    let ticking = false;
+    const update = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const progress = max > 0 ? doc.scrollTop / max : 0;
+      bar.style.transform = `scaleX(${progress})`;
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  };
+
+  const initStaggerReveal = () => {
+    const lists = [
+      document.querySelectorAll('.exp-row'),
+      document.querySelectorAll('.cert-card'),
+    ];
+    document.querySelectorAll('.entry-list').forEach((list) => {
+      lists.push(list.querySelectorAll('.paper'));
+    });
+
+    lists.forEach((items) => {
+      items.forEach((el, index) => {
+        el.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 60}ms`);
+      });
+    });
+  };
+
+  const initTimelineProgress = () => {
+    const timeline = document.getElementById('timeline');
+    const fill = document.getElementById('timelineFill');
+    if (!timeline || !fill) return;
+
+    let ticking = false;
+    const update = () => {
+      const rect = timeline.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const total = rect.height || 1;
+      const progress = Math.max(0, Math.min(1, (vh * 0.5 - rect.top) / total));
+      fill.style.height = `${progress * 100}%`;
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  };
+
+  const initCardSpotlight = () => {
+    const selector = '.stat-card, .cert-card, .project-showcase-card, .award-card, .achievement-item a';
+
+    document.addEventListener('pointermove', (event) => {
+      const card = event.target?.closest?.(selector);
+      if (!card) return;
+
+      const rect = card.getBoundingClientRect();
+      const mx = event.clientX - rect.left;
+      const my = event.clientY - rect.top;
+      card.style.setProperty('--mx', `${mx}px`);
+      card.style.setProperty('--my', `${my}px`);
+
+      if (!prefersReducedMotion && card.classList.contains('project-showcase-card')) {
+        const px = mx / rect.width - 0.5;
+        const py = my / rect.height - 0.5;
+        card.style.setProperty('--rx', `${(px * 6).toFixed(2)}deg`);
+        card.style.setProperty('--ry', `${(-py * 6).toFixed(2)}deg`);
+      }
+    }, { passive: true });
+
+    // Reset tilt when leaving a card (bound lazily, works for dynamic cards).
+    document.addEventListener('mouseover', (event) => {
+      const card = event.target?.closest?.('.project-showcase-card');
+      if (!card || card.__spotBound) return;
+      card.__spotBound = true;
+      card.addEventListener('mouseleave', () => {
+        card.style.removeProperty('--rx');
+        card.style.removeProperty('--ry');
+      });
+    });
+  };
+
+  const initHeroNetwork = () => {
+    const canvas = document.getElementById('heroCanvas');
+    const hero = canvas?.closest('.hero');
+    const ctx = canvas?.getContext?.('2d');
+    if (!canvas || !hero || !ctx) return;
+
+    const readAccent = () =>
+      getComputedStyle(root).getPropertyValue('--accent').trim() || '#000077';
+
+    let width = 0;
+    let height = 0;
+    let nodes = [];
+    let emitters = new Set();
+    let pulses = [];
+    let frame = 0;
+    let color = readAccent();
+    let raf = null;
+    let running = false;
+    const mouse = { x: -9999, y: -9999 };
+    const RING_MAX = 52;
+
+    // Weighted device population for the IoT / wireless / robotics scene.
+    const TYPES = [
+      'drone', 'sensor', 'phone', 'tower', 'arm', 'sensor', 'basestation',
+      'drone', 'robot', 'phone', 'satellite', 'arm', 'tower', 'robot', 'drone',
+    ];
+
+    const COVERAGE = 178;
+
+    // A data packet that rides whichever base-station link its device holds.
+    const makePulse = () => {
+      const devices = [];
+      nodes.forEach((n, i) => {
+        if (!emitters.has(i)) devices.push(i);
+      });
+      const dev = devices.length ? devices[Math.floor(Math.random() * devices.length)] : 0;
+      return { dev, t: Math.random(), speed: 0.012 + Math.random() * 0.012, up: Math.random() < 0.5 };
+    };
+
+    const buildNodes = () => {
+      const target = Math.round((width * height) / 24000);
+      const count = Math.max(10, Math.min(34, target));
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.32,
+        vy: (Math.random() - 0.5) * 0.32,
+        type: TYPES[Math.floor(Math.random() * TYPES.length)],
+        scale: 0.85 + Math.random() * 0.4,
+        linkTarget: -1,
+        linkStrength: 0,
+        attached: false,
+        nextToggle: 0,
+      }));
+
+      // Towers, base stations and satellites are the wireless emitters.
+      const emitterTypes = new Set(['tower', 'basestation', 'satellite']);
+      emitters = new Set();
+      nodes.forEach((n, i) => {
+        if (emitterTypes.has(n.type) && emitters.size < 6) emitters.add(i);
+      });
+      if (emitters.size === 0 && count) emitters.add(0);
+
+      // Base stations are fixed infrastructure — they don't drift.
+      emitters.forEach((i) => {
+        nodes[i].vx = 0;
+        nodes[i].vy = 0;
+      });
+
+      const pulseCount = Math.max(3, Math.min(10, Math.round(count / 4)));
+      pulses = Array.from({ length: pulseCount }, makePulse);
+    };
+
+    // Mini device icons drawn at the canvas origin (caller translates/scales).
+    const GLYPHS = {
+      drone() {
+        const s = 7;
+        ctx.beginPath();
+        ctx.moveTo(-s, -s); ctx.lineTo(s, s);
+        ctx.moveTo(s, -s); ctx.lineTo(-s, s);
+        ctx.stroke();
+        const spin = frame * 0.25;
+        [[-s, -s], [s, -s], [s, s], [-s, s]].forEach(([x, y], k) => {
+          ctx.beginPath();
+          ctx.ellipse(x, y, 3.4, 1.3, spin + k, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+        ctx.fillRect(-2.4, -2.4, 4.8, 4.8);
+      },
+      tower() {
+        ctx.beginPath();
+        ctx.moveTo(-5, 9); ctx.lineTo(0, -7); ctx.lineTo(5, 9);
+        ctx.moveTo(0, 9); ctx.lineTo(0, -7);
+        ctx.moveTo(-3.2, 3); ctx.lineTo(3.2, 3);
+        ctx.moveTo(-2, -1); ctx.lineTo(2, -1);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, -7, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+      },
+      sensor() {
+        ctx.strokeRect(-5, -5, 10, 10);
+        ctx.beginPath();
+        [-3, 0, 3].forEach((o) => {
+          ctx.moveTo(-5, o); ctx.lineTo(-8, o);
+          ctx.moveTo(5, o); ctx.lineTo(8, o);
+          ctx.moveTo(o, -5); ctx.lineTo(o, -8);
+          ctx.moveTo(o, 5); ctx.lineTo(o, 8);
+        });
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      },
+      robot() {
+        ctx.strokeRect(-5, -4, 10, 9);
+        ctx.beginPath();
+        ctx.moveTo(0, -4); ctx.lineTo(0, -8);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, -8.6, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(-2, 0, 1, 0, Math.PI * 2);
+        ctx.arc(2, 0, 1, 0, Math.PI * 2);
+        ctx.fill();
+      },
+      satellite() {
+        ctx.strokeRect(-2.6, -3, 5.2, 6);
+        ctx.strokeRect(-9, -2, 5, 4);
+        ctx.strokeRect(4, -2, 5, 4);
+        ctx.beginPath();
+        ctx.moveTo(-2.6, 0); ctx.lineTo(-4, 0);
+        ctx.moveTo(2.6, 0); ctx.lineTo(4, 0);
+        ctx.stroke();
+      },
+      phone() {
+        ctx.strokeRect(-3.5, -7, 7, 14);
+        ctx.beginPath();
+        ctx.moveTo(-1.8, -5); ctx.lineTo(1.8, -5);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 5, 1, 0, Math.PI * 2);
+        ctx.fill();
+      },
+      basestation() {
+        // Mast + tri-sector antenna panels + equipment cabinet.
+        ctx.beginPath();
+        ctx.moveTo(0, 10); ctx.lineTo(0, -9);
+        ctx.moveTo(0, -6); ctx.lineTo(-6, -8);
+        ctx.moveTo(0, -6); ctx.lineTo(6, -8);
+        ctx.stroke();
+        ctx.fillRect(-8, -9.5, 3, 2.6);
+        ctx.fillRect(5, -9.5, 3, 2.6);
+        ctx.fillRect(-1.3, -12, 2.6, 3);
+        ctx.strokeRect(-3, 5, 6, 5);
+      },
+      arm() {
+        // Pick-and-place robotic arm: base, two links, gripper.
+        ctx.fillRect(-4, 7, 8, 3);
+        ctx.beginPath();
+        ctx.moveTo(0, 7); ctx.lineTo(-3, 0); ctx.lineTo(4, -4);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 7, 1.4, 0, Math.PI * 2);
+        ctx.moveTo(-3 + 1.4, 0); ctx.arc(-3, 0, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(4, -4); ctx.lineTo(6.2, -6);
+        ctx.moveTo(4, -4); ctx.lineTo(6.6, -3.4);
+        ctx.stroke();
+      },
+    };
+
+    const resize = () => {
+      const rect = hero.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      buildNodes();
+    };
+
+    const draw = () => {
+      frame += 1;
+      ctx.clearRect(0, 0, width, height);
+
+      // Mobile devices roam; base stations stay fixed.
+      for (let i = 0; i < nodes.length; i += 1) {
+        if (emitters.has(i)) continue;
+        const n = nodes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x <= 0 || n.x >= width) n.vx *= -1;
+        if (n.y <= 0 || n.y >= height) n.vy *= -1;
+        n.x = Math.max(0, Math.min(width, n.x));
+        n.y = Math.max(0, Math.min(height, n.y));
+
+        const dx = n.x - mouse.x;
+        const dy = n.y - mouse.y;
+        const d = Math.hypot(dx, dy);
+        if (d > 0 && d < 120) {
+          const force = ((120 - d) / 120) * 0.8;
+          n.x += (dx / d) * force;
+          n.y += (dy / d) * force;
+        }
+      }
+
+      // Each device attaches to its nearest in-range base station; the link
+      // blinks on/off (attach / detach / handover) as the device roams.
+      ctx.lineWidth = 1.1;
+      for (let i = 0; i < nodes.length; i += 1) {
+        if (emitters.has(i)) continue;
+        const n = nodes[i];
+
+        let best = -1;
+        let bestD = COVERAGE;
+        emitters.forEach((ei) => {
+          const e = nodes[ei];
+          const d = Math.hypot(n.x - e.x, n.y - e.y);
+          if (d < bestD) {
+            bestD = d;
+            best = ei;
+          }
+        });
+        n.linkTarget = best;
+
+        if (frame >= n.nextToggle) {
+          n.attached = !n.attached;
+          n.nextToggle = frame + 90 + Math.floor(Math.random() * 220);
+        }
+
+        const goal = best !== -1 && n.attached ? 1 : 0;
+        n.linkStrength += (goal - n.linkStrength) * 0.06;
+
+        if (best !== -1 && n.linkStrength > 0.02) {
+          const e = nodes[best];
+          ctx.globalAlpha = n.linkStrength * (1 - bestD / COVERAGE) * 0.7;
+          ctx.strokeStyle = color;
+          ctx.beginPath();
+          ctx.moveTo(n.x, n.y);
+          ctx.lineTo(e.x, e.y);
+          ctx.stroke();
+        }
+      }
+
+      // Wireless signal rings radiating from hub nodes.
+      ctx.lineWidth = 1;
+      let ringSlot = 0;
+      emitters.forEach((idx) => {
+        const n = nodes[idx];
+        if (!n) return;
+        for (let r = 0; r < 2; r += 1) {
+          const radius = (frame * 0.5 + ringSlot * 37 + r * (RING_MAX / 2)) % RING_MAX;
+          const alpha = (1 - radius / RING_MAX) * 0.4;
+          if (alpha <= 0) continue;
+          ctx.globalAlpha = alpha;
+          ctx.strokeStyle = color;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ringSlot += 1;
+      });
+
+      // Device glyphs: drones, sensors, phones, towers, base stations,
+      // robots, pick-and-place arms, satellites.
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      for (let i = 0; i < nodes.length; i += 1) {
+        const n = nodes[i];
+        ctx.save();
+        ctx.translate(n.x, n.y);
+        ctx.scale(n.scale, n.scale);
+        ctx.globalAlpha = 0.9;
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 1.3;
+        (GLYPHS[n.type] || GLYPHS.sensor)(n);
+        ctx.restore();
+      }
+
+      // Data packets ride active links between a device and its base station.
+      ctx.fillStyle = color;
+      for (const p of pulses) {
+        const n = nodes[p.dev];
+        if (!n || n.linkTarget === -1 || n.linkStrength < 0.4) {
+          Object.assign(p, makePulse());
+          continue;
+        }
+        const e = nodes[n.linkTarget];
+        p.t += p.speed;
+        if (p.t >= 1) {
+          p.t = 0;
+          p.up = !p.up; // alternate uplink / downlink
+        }
+        const tt = p.up ? p.t : 1 - p.t;
+        ctx.globalAlpha = Math.sin(p.t * Math.PI) * 0.9 * n.linkStrength;
+        ctx.beginPath();
+        ctx.arc(n.x + (e.x - n.x) * tt, n.y + (e.y - n.y) * tt, 1.9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.globalAlpha = 1;
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    const start = () => {
+      if (running || prefersReducedMotion) return;
+      running = true;
+      raf = requestAnimationFrame(draw);
+    };
+
+    const stop = () => {
+      running = false;
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
+    };
+
+    resize();
+
+    if (prefersReducedMotion) {
+      // Render a single static frame.
+      draw();
+      stop();
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      if (prefersReducedMotion) draw();
+    });
+
+    window.addEventListener('pointermove', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = event.clientX - rect.left;
+      mouse.y = event.clientY - rect.top;
+    }, { passive: true });
+
+    window.addEventListener('pointerout', () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else start();
+    });
+
+    // Refresh node color when the theme changes.
+    new MutationObserver(() => {
+      color = readAccent();
+    }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) start();
+          else stop();
+        });
+      }, { threshold: 0 });
+      observer.observe(hero);
+    } else {
+      start();
+    }
   };
 
   const initBackToTop = () => {
@@ -484,7 +961,8 @@
 
     const lines = [
       'Researching co-simulation frameworks for cyber-physical multi-robot systems.',
-      'Building network-robot middleware for Industry 4.0 warehouse automation.',
+      'Building GPU-scaled 5G/6G system-level radio simulation platforms at Nokia.',
+      'Designing network schedulers and AI-assisted simulation workflows.',
       'Exploring collaborative robotics and multi-robot network awareness.',
     ];
 
@@ -892,12 +1370,17 @@
     initTheme();
     initSmoothAnchors();
     initScrollSpy();
+    initScrollProgress();
+    initStaggerReveal();
     initReveal();
     initCopyButtons();
     initBackToTop();
     initTimeline();
+    initTimelineProgress();
     initImpactStats();
     initHeroTypewriter();
+    initHeroNetwork();
+    initCardSpotlight();
     initGithubStatsAnimation();
     initResearchFilters();
     initProjects();

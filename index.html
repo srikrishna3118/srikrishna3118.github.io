@@ -16,12 +16,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap">
-    <link rel="stylesheet" href="assets/site.css?v=17">
+    <link rel="stylesheet" href="assets/site.css?v=22">
 
     <title>Srikrishna Acharya</title>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
     <header class="site-topbar" id="top">
       <div class="page topbar-inner">
@@ -29,6 +30,7 @@
         <nav class="topnav" aria-label="Primary">
           <a class="topnav-link" href="#about">About</a>
           <a class="topnav-link" href="#experience">Experience</a>
+          <a class="topnav-link" href="#awards">Awards</a>
           <a class="topnav-link" href="#certifications">Certifications</a>
           <a class="topnav-link" href="#projects">Projects</a>
           <a class="topnav-link" href="#publications">Publications</a>
@@ -43,6 +45,7 @@
 
     <main class="page" id="content">
       <section id="hero" class="hero" data-reveal aria-label="Introduction">
+        <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
         <div class="hero-top">
           <img src="images/profile-srk.png" class="profile-photo" alt="Srikrishna Acharya">
           <div class="hero-intro">
@@ -94,6 +97,7 @@
 
       <section id="about" class="lead-block" data-reveal>
         I build co-simulation frameworks that capture the cyber-physical systems aspects of multi-robot networks — from networked robot middleware to Industry 4.0 warehouse automation.
+        At <strong>Nokia</strong> I work on system-level radio (5G/6G) simulation platforms — scheduler architecture, GPU-scaled simulation with Sionna, AI-assisted simulation workflows, and the move to demand-driven Kubernetes execution.
         My PhD at <a href="https://cps.iisc.ac.in">RBCCPS, IISc</a> was co-advised by
         <a href="https://aml.ece.iisc.ac.in/index.php/Bharadwaj_Amrutur">Prof Bharadwaj Amrutur</a> and
         <a href="http://cds.iisc.ac.in/faculty/simmhan/">Prof Yogesh Simmhan</a>, and I continue to collaborate with the
@@ -101,10 +105,12 @@
         on collaborative robotics, learning-based robots, and network-enabled multi-robot systems.
         <div class="expertise-chips" aria-label="Core research areas">
           <span class="expertise-chip">Co-Simulation</span>
+          <span class="expertise-chip">5G/6G System-Level Simulation</span>
+          <span class="expertise-chip">Network Schedulers</span>
+          <span class="expertise-chip">GPU Scaling / Sionna</span>
+          <span class="expertise-chip">AI-Assisted Workflows</span>
           <span class="expertise-chip">Collaborative Robotics</span>
-          <span class="expertise-chip">Network-Robot Middleware</span>
           <span class="expertise-chip">Cyber-Physical Systems</span>
-          <span class="expertise-chip">IoT / Smart Cities</span>
           <span class="expertise-chip">ROS / Robot Networks</span>
         </div>
         <div class="about-support" data-reveal>
@@ -118,19 +124,26 @@
       <h2 class="section-title" id="experience" data-reveal>Experience</h2>
 
       <div class="exp-timeline" id="timeline" aria-label="Career timeline">
+        <span class="exp-timeline-fill" id="timelineFill" aria-hidden="true"></span>
         <div class="exp-row" data-reveal>
           <div class="exp-years">Aug 2022 – present</div>
           <div class="exp-body">
             <div class="exp-role">Senior Research Specialist</div>
-            <div class="exp-org">Nokia · Bengaluru, India (Hybrid)</div>
+            <div class="exp-org">Nokia · MI TS RI Protocol — System-Level Simulators · Bengaluru, India (Hybrid)</div>
             <ul class="exp-bullets">
-              <li>Radio interface and access research in ST NSD RIAG</li>
-              <li>Industry 4.0 and warehouse automation co-simulation</li>
+              <li>Architected GPU and multi-GPU scaling for the Sionna system-level (SYS) simulation PoC — runtime optimizations and unblocking experiments toward large-scale 5G/6G simulation readiness (Phy Excellence Award, 2025)</li>
+              <li>Modernized the SAMPO scheduler: enabled mTRP scenarios with full backward compatibility, and co-designed a reusable stage-sequence framework adopted across scheduler and AI/ML workstreams (MRSS, MU-MIMO, MIMO muting, DL variants)</li>
+              <li>Led the simulation platform's move from a rigid IT grid to demand-driven autoscaling Kubernetes — NESC PoC, container strategy, and a Kueue/ksub evaluation reaching ~2× batch-job throughput over the grid baseline</li>
+              <li>Built AI-assisted simulation workflows (Sim Assistant), redesigned the isolated Python interface environment for reliability, and led GitHub Copilot best-practice enablement</li>
+              <li>Drove research support and enablement across NSD/MN — FREAC training, the SAMPO onboarding &amp; upskilling suite, and the Simbuddy support process; co-chaired an ICASSP sensing special session</li>
             </ul>
             <div class="exp-tags">
-              <span class="exp-tag">5G</span>
-              <span class="exp-tag">RIAG</span>
-              <span class="exp-tag">Co-Simulation</span>
+              <span class="exp-tag">5G/6G</span>
+              <span class="exp-tag">Simulation Platform</span>
+              <span class="exp-tag">Schedulers</span>
+              <span class="exp-tag">GPU / Sionna</span>
+              <span class="exp-tag">AI Workflows</span>
+              <span class="exp-tag">Kubernetes</span>
             </div>
           </div>
         </div>
@@ -221,6 +234,51 @@
             <p class="exp-desc">Electronics and Communications Engineering.</p>
           </div>
         </div>
+      </div>
+
+      <h2 class="section-title" id="awards" data-reveal>Awards &amp; Recognition</h2>
+
+      <div class="awards-rail">
+        <article class="award-card" data-reveal>
+          <span class="award-medal"><i class="fa fa-trophy" aria-hidden="true"></i></span>
+          <div class="award-body">
+            <h3 class="award-name">Phy Excellence Award</h3>
+            <p class="award-context">Nokia · Sionna SYS PoC — GPU &amp; multi-GPU scaling impact</p>
+            <span class="award-year">Dec 2025</span>
+          </div>
+        </article>
+        <article class="award-card" data-reveal>
+          <span class="award-medal"><i class="fa fa-star" aria-hidden="true"></i></span>
+          <div class="award-body">
+            <h3 class="award-name">RIC Simulation Excellence Award</h3>
+            <p class="award-context">Nokia · GX+ RIC simulation</p>
+            <span class="award-year">Q4 2025</span>
+          </div>
+        </article>
+        <article class="award-card" data-reveal>
+          <span class="award-medal"><i class="fa fa-users" aria-hidden="true"></i></span>
+          <div class="award-body">
+            <h3 class="award-name">Outstanding Team Collaboration Award</h3>
+            <p class="award-context">Nokia · GX+ RIC</p>
+            <span class="award-year">Q2 2025</span>
+          </div>
+        </article>
+        <article class="award-card" data-reveal>
+          <span class="award-medal"><i class="fa fa-handshake-o" aria-hidden="true"></i></span>
+          <div class="award-body">
+            <h3 class="award-name">Best Collaboration Award</h3>
+            <p class="award-context">Nokia · MRSS demo (MN + NSD)</p>
+            <span class="award-year">2024</span>
+          </div>
+        </article>
+        <article class="award-card" data-reveal>
+          <span class="award-medal"><i class="fa fa-certificate" aria-hidden="true"></i></span>
+          <div class="award-body">
+            <h3 class="award-name">Commitment &amp; Excellence Award</h3>
+            <p class="award-context">Nokia</p>
+            <span class="award-year">May 2023</span>
+          </div>
+        </article>
       </div>
 
       <h2 class="section-title" id="certifications" data-reveal>Certifications</h2>
@@ -388,8 +446,10 @@
       </div>
     </div>
 
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
-    <script src="assets/site.js?v=16"></script>
+    <script src="assets/site.js?v=22"></script>
   </body>
 </html>
