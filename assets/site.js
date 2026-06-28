@@ -1097,6 +1097,67 @@
       updateHeroStars(totalStars);
     };
 
+    const updateGithubStatsFromStatic = (stats) => {
+      const reposEl = document.querySelector('[data-stat-repos]');
+      const starsEl = document.querySelector('[data-stat-stars]');
+      const followersEl = document.querySelector('[data-stat-followers]');
+      const block = document.querySelector('.projects-section .metrics-block');
+
+      const setGithubStat = (el, value) => {
+        if (!el) return;
+        el.setAttribute('data-count', String(value));
+        if (block?.__githubStatsVisible) animateCount(el, value);
+      };
+
+      setGithubStat(reposEl, stats.repos ?? 0);
+      setGithubStat(starsEl, stats.stars ?? 0);
+      setGithubStat(followersEl, stats.followers ?? 0);
+
+      if (typeof stats.stars === 'number') updateHeroStars(stats.stars);
+    };
+
+    // Prefer a pre-baked snapshot (assets/projects.json) so visitors never burn
+    // the shared unauthenticated GitHub API budget. Returns true on success.
+    const loadStaticProjects = async () => {
+      try {
+        const response = await fetch('assets/projects.json', { cache: 'no-cache' });
+        if (!response.ok) return false;
+
+        const payload = await response.json();
+        const projects = Array.isArray(payload?.projects) ? payload.projects : [];
+        if (projects.length === 0) return false;
+
+        const byKey = new Map();
+        projects.forEach((p) => {
+          if (!p?.full_name) return;
+          byKey.set(p.full_name, {
+            full_name: p.full_name,
+            name: p.name,
+            html_url: p.html_url,
+            homepage: p.homepage || '',
+            description: p.description || '',
+            stargazers_count: p.stargazers_count || 0,
+            forks_count: p.forks_count || 0,
+            updated_at: p.updated_at || '',
+            license: p.license_spdx ? { spdx_id: p.license_spdx } : null,
+            _languages: p.languages || {},
+            _readme: typeof p.readme === 'string' ? p.readme : '',
+            _static: true,
+          });
+        });
+
+        showcaseRepos = SHOWCASE_REPOS.map((key) => byKey.get(key)).filter(Boolean);
+        if (showcaseRepos.length === 0) return false;
+        allRepos = showcaseRepos.slice();
+
+        if (payload.stats) updateGithubStatsFromStatic(payload.stats);
+        renderProjects();
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
     const getSourceLabel = (ownerLogin) => {
       return GITHUB_SOURCES.find((source) => source.login === ownerLogin)?.label || ownerLogin;
     };
@@ -1179,6 +1240,13 @@
       );
     };
 
+    const openModal = (el) => {
+      if (!el) return;
+      el.hidden = false;
+      el.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
     const closeModal = () => {
       if (!modal) return;
       modal.hidden = true;
@@ -1220,27 +1288,37 @@
       }
       if (readmeEl) readmeEl.innerHTML = '<p class="projects-loading">Loading README...</p>';
 
-      modal.hidden = false;
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+      openModal(modal);
 
       try {
-        const detailKey = `${fullName}:detail`;
-        const langsKey = `${fullName}:langs`;
-        const readmeKey = `${fullName}:readme`;
+        let detail = repo;
+        let langs = {};
+        let readmeRaw = '';
 
-        const [detailResult, langsResult, readmeResult] = await Promise.all([
-          githubFetch(`https://api.github.com/repos/${fullName}`, detailKey),
-          githubFetch(`https://api.github.com/repos/${fullName}/languages`, langsKey),
-          githubFetch(
-            `https://api.github.com/repos/${fullName}/readme`,
-            readmeKey,
-            'application/vnd.github.raw'
-          ),
-        ]);
+        if (repo._static) {
+          // Everything is baked into assets/projects.json — no API calls.
+          langs = repo._languages || {};
+          readmeRaw = typeof repo._readme === 'string' ? repo._readme : '';
+        } else {
+          const detailKey = `${fullName}:detail`;
+          const langsKey = `${fullName}:langs`;
+          const readmeKey = `${fullName}:readme`;
 
-        const detail = detailResult.data || repo;
-        const langs = langsResult.data || {};
+          const [detailResult, langsResult, readmeResult] = await Promise.all([
+            githubFetch(`https://api.github.com/repos/${fullName}`, detailKey),
+            githubFetch(`https://api.github.com/repos/${fullName}/languages`, langsKey),
+            githubFetch(
+              `https://api.github.com/repos/${fullName}/readme`,
+              readmeKey,
+              'application/vnd.github.raw'
+            ),
+          ]);
+
+          detail = detailResult.data || repo;
+          langs = langsResult.data || {};
+          readmeRaw = typeof readmeResult.data === 'string' ? readmeResult.data : '';
+        }
+
         const totalBytes = Object.values(langs).reduce((sum, n) => sum + n, 0);
 
         if (titleEl) titleEl.textContent = detail.full_name || repo.name;
@@ -1269,7 +1347,7 @@
         }
 
         if (readmeEl) {
-          const raw = typeof readmeResult.data === 'string' ? readmeResult.data : '';
+          const raw = readmeRaw;
           if (raw && window.marked && window.DOMPurify) {
             const html = window.marked.parse(raw, { gfm: true, breaks: true });
             readmeEl.innerHTML = window.DOMPurify.sanitize(html);
@@ -1362,7 +1440,9 @@
       if (event.key === 'Escape' && modal && !modal.hidden) closeModal();
     });
 
-    loadProjects();
+    loadStaticProjects().then((ok) => {
+      if (!ok) loadProjects();
+    });
   };
 
   const init = () => {

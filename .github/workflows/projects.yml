@@ -1,0 +1,45 @@
+name: Refresh projects data
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # daily at 06:00 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/build-projects.js
+      - .github/workflows/projects.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-projects
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate assets/projects.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/build-projects.js
+
+      - name: Commit if changed
+        run: |
+          if [[ -n "$(git status --porcelain assets/projects.json)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add assets/projects.json
+            git commit -m "chore: refresh projects.json [skip ci]"
+            git push
+          else
+            echo "No changes to projects.json"
+          fi
