@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-28T06:22:48.616Z",
+  "generated_at": "2026-09-29T06:16:58.694Z",
   "stats": {
     "repos": 27,
     "stars": 13,
@@ -31,17 +31,19 @@
       "description": "",
       "stargazers_count": 0,
       "forks_count": 0,
-      "updated_at": "2026-06-13T16:55:44Z",
+      "updated_at": "2026-09-28T18:36:14Z",
       "license_spdx": "MIT",
       "languages": {
-        "Python": 202183,
-        "C++": 68229,
-        "Shell": 16768,
-        "HTML": 13695,
-        "Makefile": 4632,
-        "CSS": 2768
+        "Python": 457793,
+        "C++": 241393,
+        "Shell": 28075,
+        "HTML": 13930,
+        "Makefile": 5780,
+        "CSS": 2768,
+        "Gnuplot": 603,
+        "CMake": 448
       },
-      "readme": "# CORNET — Generic Co-Simulation Framework for Networked Robots\n\n[![CI](https://github.com/rbccps-iisc/CORNET/actions/workflows/test.yml/badge.svg)](https://github.com/rbccps-iisc/CORNET/actions)\n\n**CORNET** is a task-driven, plugin-based co-simulation framework that lets you run network-robotics experiments with a single config file and one command:\n\n```bash\npython -m cornet tasks/pendulum_nr_control\n```\n\n## Features\n\n- **Unified config schema** — one YAML covers network (NS-3 5G NR or Mininet-WiFi) + robot (Gazebo + ROS 2)\n- **Plugin architecture** — swap network or robot backends without touching orchestration code\n- **Task-folder convention** — each experiment is fully self-contained under `tasks/<name>/`\n- **Parameter sweep** — declare axes in config; framework runs all combinations automatically\n- **EvalTool interface** — standardized metric extraction per task\n- **Experiment leaderboard** — append-only JSON + `rich` terminal viewer across runs\n\n## Quickstart\n\n```bash\npip install cornet-framework\n# System prerequisites: NS-3 (with 5G NR), Mininet-WiFi, Gazebo Classic 11, ROS 2 Humble\npython -m cornet tasks/pendulum_nr_control\npython -m cornet view tasks/pendulum_nr_control\n```\n\nSee [docs/INSTALL.md](docs/INSTALL.md) for system prerequisites and [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) for a walkthrough.\n\n## Development\n\nCORNET changes are tracked with OpenSpec (`/opsx:propose → /opsx:discuss → /opsx:apply → /opsx:archive`). The optional discuss phase (`/opsx:discuss`) runs adversarial critique and generates a `discussion.md` with binding implementation constraints before apply. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#openspec-workflow).\n\n## CORNET Family\n\n| Version | Repo | Publication |\n|---------|------|-------------|\n| 1.0 | [srikrishna3118/CORNET](https://github.com/srikrishna3118/CORNET) | COMSNETS 2020 |\n| 2.0 | [rbccps-iisc/CORNET2.0](https://github.com/rbccps-iisc/CORNET2.0) | arXiv:2109.06979, COMSNETS 2022 |\n| 3.0 | [rbccps-iisc/CORNET3.0](https://github.com/rbccps-iisc/CORNET3.0) | PhD thesis (IISc, 2025) |\n| Flagship | **this repo** | — |\n\nSee [docs/LINEAGE.md](docs/LINEAGE.md) for the full family history and BibTeX citations.\n\n## License\n\nMIT — see [LICENSE](LICENSE).\n"
+      "readme": "# CORNET — Generic Co-Simulation Framework for Networked Robots\n\n[![CI](https://github.com/rbccps-iisc/CORNET/actions/workflows/test.yml/badge.svg)](https://github.com/rbccps-iisc/CORNET/actions)\n\n**CORNET** is a task-driven, plugin-based co-simulation framework that lets you run network-robotics experiments with a single config file and one command:\n\n```bash\npython -m cornet tasks/pendulum_nr_control\n```\n\n## Features\n\n- **Unified config schema** — one YAML covers network (NS-3 5G NR or Mininet-WiFi) + robot (Gazebo + ROS 2)\n- **Plugin architecture** — swap network or robot backends without touching orchestration code\n- **Task-folder convention** — each experiment is fully self-contained under `tasks/<name>/`\n- **Parameter sweep** — declare axes in config; framework runs all combinations automatically\n- **EvalTool interface** — standardized metric extraction per task\n- **Experiment leaderboard** — append-only JSON + `rich` terminal viewer across runs\n\n## Quickstart\n\n```bash\npip install cornet-framework\n# System prerequisites: NS-3 (with 5G NR), Mininet-WiFi, Gazebo Classic 11, ROS 2 Humble\npython -m cornet tasks/pendulum_nr_control\npython -m cornet view tasks/pendulum_nr_control\n```\n\nSee [docs/INSTALL.md](docs/INSTALL.md) for system prerequisites and [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) for a walkthrough. The same pages are published at <https://rbccps-iisc.github.io/CORNET/> once a repository admin enables [GitHub Pages with Actions](docs/guides/publishing-docs.md).\n\n## Development\n\nCORNET changes are tracked with OpenSpec (`/opsx:propose → /opsx:discuss → /opsx:apply → /opsx:archive`). The optional discuss phase (`/opsx:discuss`) runs adversarial critique and generates a `discussion.md` with binding implementation constraints before apply. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#openspec-workflow).\n\n## CORNET Family\n\n| Version | Repo | Publication |\n|---------|------|-------------|\n| 1.0 | [srikrishna3118/CORNET](https://github.com/srikrishna3118/CORNET) | COMSNETS 2020 |\n| 2.0 | [rbccps-iisc/CORNET2.0](https://github.com/rbccps-iisc/CORNET2.0) | arXiv:2109.06979, COMSNETS 2022 |\n| 3.0 | [rbccps-iisc/CORNET3.0](https://github.com/rbccps-iisc/CORNET3.0) | PhD thesis (IISc, 2025) |\n| Flagship | **this repo** | — |\n\nSee [docs/LINEAGE.md](docs/LINEAGE.md) for the full family history and BibTeX citations.\n\n## License\n\nMIT — see [LICENSE](LICENSE).\n"
     },
     {
       "full_name": "srikrishna3118/modern-systems-engineering",
